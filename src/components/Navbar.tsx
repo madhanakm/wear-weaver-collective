@@ -23,6 +23,9 @@ const Navbar = () => {
             <Link to="/gallery" className="text-foreground hover:text-primary transition-colors">
               Gallery
             </Link>
+            <Link to="/about" className="text-foreground hover:text-primary transition-colors">
+              About Us
+            </Link>
             <Link to="/contact" className="text-foreground hover:text-primary transition-colors">
               Contact
             </Link>
@@ -56,6 +59,13 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Gallery
+            </Link>
+            <Link
+              to="/about"
+              className="block text-foreground hover:text-primary transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              About Us
             </Link>
             <Link
               to="/contact"
