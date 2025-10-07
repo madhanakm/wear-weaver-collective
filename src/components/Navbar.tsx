@@ -29,9 +29,11 @@ const Navbar = () => {
             <Link to="/contact" className="text-foreground hover:text-primary transition-colors">
               Contact
             </Link>
-            <Button variant="default" size="sm">
-              Get Quote
-            </Button>
+            <Link to="/get-quote">
+              <Button variant="default" size="sm">
+                Get Quote
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -74,9 +76,11 @@ const Navbar = () => {
             >
               Contact
             </Link>
-            <Button variant="default" size="sm" className="w-full">
-              Get Quote
-            </Button>
+            <Link to="/get-quote" onClick={() => setIsOpen(false)}>
+              <Button variant="default" size="sm" className="w-full">
+                Get Quote
+              </Button>
+            </Link>
           </div>
         )}
       </div>

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-manufacturing.jpg";
 
 const Hero = () => {
@@ -25,10 +26,12 @@ const Hero = () => {
             Transform your brand with high-quality customized t-shirts, tracksuits, hoodies, and sportswear. From concept to delivery, we bring your vision to life.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
-            <Button size="lg" variant="hero" className="text-lg">
-              Get a Quote
-              <ArrowRight className="ml-2" />
-            </Button>
+            <Link to="/get-quote">
+              <Button size="lg" variant="hero" className="text-lg">
+                Get a Quote
+                <ArrowRight className="ml-2" />
+              </Button>
+            </Link>
             <Button size="lg" variant="secondary" className="text-lg">
               View Products
             </Button>
