@@ -13,7 +13,7 @@ const About = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              About SportWear Pro
+              About Nisanth Sports Garments
             </h1>
             <p className="text-xl text-muted-foreground">
               Leading the way in custom sportswear manufacturing with over 15 years of excellence
@@ -28,7 +28,7 @@ const About = () => {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold mb-6 text-center">Our Story</h2>
             <p className="text-lg text-muted-foreground mb-4">
-              Founded in 2010, SportWear Pro has grown from a small local workshop to an international 
+              Founded in 2010, Nisanth Sports Garments has grown from a small local workshop to an international 
               custom sportswear manufacturer serving teams, brands, and organizations worldwide. Our 
               passion for quality and innovation drives everything we do.
             </p>

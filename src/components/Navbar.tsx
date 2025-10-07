@@ -12,7 +12,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-            SportWear Pro
+            Nisanth Sports Garments
           </Link>
 
           {/* Desktop Navigation */}
