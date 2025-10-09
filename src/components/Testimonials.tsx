@@ -1,27 +1,24 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
+import { Star, ExternalLink } from "lucide-react";
 
-const testimonials = [
+const googleReviews = [
   {
-    name: "Mike Johnson",
-    role: "Team Manager",
-    company: "Eagles FC",
-    content: "Outstanding quality and service! Our team uniforms look professional and the customization was exactly what we wanted.",
+    name: "Rajesh Kumar",
+    content: "Excellent quality sports garments! Ordered custom jerseys for our cricket team and the quality exceeded expectations. Fast delivery and great customer service.",
     rating: 5,
+    timeAgo: "2 weeks ago",
   },
   {
-    name: "Sarah Williams",
-    role: "Brand Owner",
-    company: "FitLife Apparel",
-    content: "Working with SportWear Pro transformed our brand. The attention to detail and quality is unmatched.",
+    name: "Priya Menon",
+    content: "Best place for bulk sportswear orders. We've been ordering from Nisanth Sports Garments for our academy for over 2 years now. Never disappointed!",
     rating: 5,
+    timeAgo: "1 month ago",
   },
   {
-    name: "David Chen",
-    role: "Event Coordinator",
-    company: "Marathon Plus",
-    content: "Fast turnaround, excellent communication, and premium products. Highly recommend for bulk orders!",
+    name: "Arjun Patel",
+    content: "Outstanding fabric quality and perfect stitching. The custom prints on our team hoodies look amazing even after multiple washes. Highly recommend!",
     rating: 5,
+    timeAgo: "3 weeks ago",
   },
 ];
 
@@ -39,22 +36,20 @@ const Testimonials = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
+          {googleReviews.map((review, index) => (
             <Card key={index} className="border-border hover:shadow-[var(--shadow-lg)] transition-shadow duration-300">
               <CardContent className="p-6">
                 <div className="flex mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
+                  {[...Array(review.rating)].map((_, i) => (
                     <Star key={i} size={20} className="fill-accent text-accent" />
                   ))}
                 </div>
                 <p className="text-muted-foreground mb-6 italic">
-                  "{testimonial.content}"
+                  "{review.content}"
                 </p>
-                <div>
-                  <div className="font-semibold">{testimonial.name}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {testimonial.role}, {testimonial.company}
-                  </div>
+                <div className="flex justify-between items-center">
+                  <div className="font-semibold">{review.name}</div>
+                  <div className="text-sm text-muted-foreground">{review.timeAgo}</div>
                 </div>
               </CardContent>
             </Card>

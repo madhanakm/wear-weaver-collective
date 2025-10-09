@@ -25,6 +25,9 @@ const Navbar = () => {
             <Link to="/" className="px-4 py-2 text-foreground hover:text-primary font-medium transition-all duration-200 rounded-lg hover:bg-primary/5">
               Home
             </Link>
+            <Link to="/products" className="px-4 py-2 text-foreground hover:text-primary font-medium transition-all duration-200 rounded-lg hover:bg-primary/5">
+              Products
+            </Link>
             <Link to="/gallery" className="px-4 py-2 text-foreground hover:text-primary font-medium transition-all duration-200 rounded-lg hover:bg-primary/5">
               Gallery
             </Link>
@@ -60,6 +63,13 @@ const Navbar = () => {
               onClick={() => setIsOpen(false)}
             >
               Home
+            </Link>
+            <Link
+              to="/products"
+              className="block px-4 py-3 text-foreground hover:text-primary font-medium transition-all duration-200 rounded-lg hover:bg-primary/5 mx-2"
+              onClick={() => setIsOpen(false)}
+            >
+              Products
             </Link>
             <Link
               to="/gallery"

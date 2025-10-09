@@ -1,4 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import tshirtImage from "@/assets/tshirt.jpg";
 import tracksuitImage from "@/assets/tracksuit.jpg";
 import hoodieImage from "@/assets/hoodie.jpg";
@@ -40,7 +42,7 @@ const Products = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {products.map((product, index) => (
             <Card 
               key={index} 
@@ -62,6 +64,14 @@ const Products = () => {
               </CardContent>
             </Card>
           ))}
+        </div>
+        
+        <div className="text-center">
+          <Link to="/products">
+            <Button size="lg" variant="outline" className="hover:bg-primary hover:text-primary-foreground">
+              View All Products
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

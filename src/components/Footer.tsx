@@ -84,9 +84,10 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 mt-12 border-t border-secondary-foreground/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-secondary-foreground/60 text-sm">
-              &copy; 2025 Nisanth Sports Garments. All rights reserved.
-            </p>
+            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-secondary-foreground/60 text-sm">
+              <p>&copy; 2025 Nisanth Sports Garments. All rights reserved.</p>
+              <p>Developed By <a href="https://thinkaside.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:text-primary/80 transition-colors duration-200">ThinkAside</a></p>
+            </div>
             <div className="flex gap-6 text-sm text-secondary-foreground/60">
               <a href="#" className="hover:text-primary transition-colors duration-200">Privacy Policy</a>
               <a href="#" className="hover:text-primary transition-colors duration-200">Terms of Service</a>
