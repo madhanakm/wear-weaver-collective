@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Menu, X, Sparkles } from "lucide-react";
 import { useState } from "react";
+import logoImage from "@/assets/nsg_logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,59 +13,55 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-center h-24">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-4 group relative">
-            <div className="relative">
-              <div className="absolute -inset-2 bg-gradient-to-br from-primary via-accent to-primary-glow rounded-2xl blur-xl opacity-40 group-hover:opacity-70 transition-all duration-500 animate-pulse"></div>
-              <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-primary via-primary-glow to-accent flex items-center justify-center shadow-[0_20px_60px_-15px_rgba(59,130,246,0.5)] group-hover:shadow-[0_20px_80px_-10px_rgba(59,130,246,0.8)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 border border-white/20">
-                <Sparkles className="w-7 h-7 text-white drop-shadow-lg group-hover:rotate-12 transition-transform duration-500" />
-              </div>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-3xl font-black bg-gradient-to-r from-primary via-primary-glow to-accent bg-clip-text text-transparent group-hover:from-accent group-hover:via-primary group-hover:to-primary transition-all duration-500 drop-shadow-sm">
-                Nisanth Sports
-              </span>
-              <div className="flex items-center gap-2">
-                <div className="h-px w-8 bg-gradient-to-r from-primary to-accent"></div>
-                <span className="text-[10px] text-muted-foreground font-bold tracking-[0.2em] uppercase">Premium Sportswear</span>
-              </div>
-            </div>
+          <Link to="/" className="flex items-center group relative">
+            <img 
+              src={logoImage} 
+              alt="NSG Logo" 
+              className="w-24 h-24 object-contain transition-all duration-500 group-hover:scale-110"
+            />
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             <Link to="/" className="relative px-5 py-3 text-foreground/80 hover:text-foreground font-bold text-sm transition-all duration-300 rounded-xl group">
-              <span className="relative z-10">Home</span>
+              <span className="relative z-10 uppercase">Home</span>
               <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-300"></span>
               <span className="absolute bottom-2 left-5 right-5 h-0.5 bg-gradient-to-r from-primary via-accent to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </Link>
             <Link to="/products" className="relative px-5 py-3 text-foreground/80 hover:text-foreground font-bold text-sm transition-all duration-300 rounded-xl group">
-              <span className="relative z-10">Products</span>
+              <span className="relative z-10 uppercase">Products</span>
               <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-300"></span>
               <span className="absolute bottom-2 left-5 right-5 h-0.5 bg-gradient-to-r from-primary via-accent to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </Link>
             <Link to="/gallery" className="relative px-5 py-3 text-foreground/80 hover:text-foreground font-bold text-sm transition-all duration-300 rounded-xl group">
-              <span className="relative z-10">Gallery</span>
+              <span className="relative z-10 uppercase">Gallery</span>
               <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-300"></span>
               <span className="absolute bottom-2 left-5 right-5 h-0.5 bg-gradient-to-r from-primary via-accent to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </Link>
             <Link to="/about" className="relative px-5 py-3 text-foreground/80 hover:text-foreground font-bold text-sm transition-all duration-300 rounded-xl group">
-              <span className="relative z-10">About Us</span>
+              <span className="relative z-10 uppercase">About Us</span>
               <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-300"></span>
               <span className="absolute bottom-2 left-5 right-5 h-0.5 bg-gradient-to-r from-primary via-accent to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </Link>
             <Link to="/contact" className="relative px-5 py-3 text-foreground/80 hover:text-foreground font-bold text-sm transition-all duration-300 rounded-xl group">
-              <span className="relative z-10">Contact</span>
+              <span className="relative z-10 uppercase">Contact</span>
+              <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-300"></span>
+              <span className="absolute bottom-2 left-5 right-5 h-0.5 bg-gradient-to-r from-primary via-accent to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+            </Link>
+            <Link to="/blog" className="relative px-5 py-3 text-foreground/80 hover:text-foreground font-bold text-sm transition-all duration-300 rounded-xl group">
+              <span className="relative z-10 uppercase">Blog</span>
               <span className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/10 group-hover:to-accent/10 transition-all duration-300"></span>
               <span className="absolute bottom-2 left-5 right-5 h-0.5 bg-gradient-to-r from-primary via-accent to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
             </Link>
             <div className="ml-6 pl-6 border-l border-border/50">
               <Link to="/get-quote">
-                <Button variant="default" size="lg" className="relative overflow-hidden bg-gradient-to-r from-primary via-primary-glow to-accent hover:from-accent hover:via-primary-glow hover:to-primary shadow-[0_10px_40px_-10px_rgba(59,130,246,0.6)] hover:shadow-[0_20px_60px_-10px_rgba(59,130,246,0.8)] transition-all duration-500 font-black px-8 py-3 text-base border border-white/20 group">
-                  <span className="relative z-10 flex items-center gap-2">
+                <Button variant="default" size="lg" className="relative overflow-hidden bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-[0_8px_32px_-8px_rgba(197,158,79,0.6)] hover:shadow-[0_16px_48px_-8px_rgba(197,158,79,0.8)] transition-all duration-500 font-bold px-10 py-4 text-base border-2 border-primary/30 hover:border-primary/60 group rounded-full">
+                  <span className="relative z-10 flex items-center gap-3 uppercase tracking-wide">
+                    <Sparkles className="w-5 h-5 group-hover:rotate-180 group-hover:scale-110 transition-all duration-500" />
                     Get Quote
-                    <Sparkles className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
                   </span>
-                  <span className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></span>
+                  <span className="absolute inset-0 rounded-full bg-primary/20 scale-0 group-hover:scale-100 transition-transform duration-300"></span>
                 </Button>
               </Link>
             </div>
@@ -91,7 +88,7 @@ const Navbar = () => {
             >
               <span className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary group-hover:scale-150 transition-all duration-300"></span>
-                Home
+                <span className="uppercase">Home</span>
               </span>
             </Link>
             <Link
@@ -101,7 +98,7 @@ const Navbar = () => {
             >
               <span className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary group-hover:scale-150 transition-all duration-300"></span>
-                Products
+                <span className="uppercase">Products</span>
               </span>
             </Link>
             <Link
@@ -111,7 +108,7 @@ const Navbar = () => {
             >
               <span className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary group-hover:scale-150 transition-all duration-300"></span>
-                Gallery
+                <span className="uppercase">Gallery</span>
               </span>
             </Link>
             <Link
@@ -121,7 +118,7 @@ const Navbar = () => {
             >
               <span className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary group-hover:scale-150 transition-all duration-300"></span>
-                About Us
+                <span className="uppercase">About Us</span>
               </span>
             </Link>
             <Link
@@ -131,13 +128,23 @@ const Navbar = () => {
             >
               <span className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary group-hover:scale-150 transition-all duration-300"></span>
-                Contact
+                <span className="uppercase">Contact</span>
+              </span>
+            </Link>
+            <Link
+              to="/blog"
+              className="relative block px-6 py-4 text-foreground hover:text-primary font-bold transition-all duration-300 rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 mx-3 group border border-transparent hover:border-primary/20"
+              onClick={() => setIsOpen(false)}
+            >
+              <span className="flex items-center gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary group-hover:scale-150 transition-all duration-300"></span>
+                <span className="uppercase">Blog</span>
               </span>
             </Link>
             <div className="px-3 pt-4">
               <Link to="/get-quote" onClick={() => setIsOpen(false)}>
                 <Button variant="default" size="lg" className="w-full relative overflow-hidden bg-gradient-to-r from-primary via-primary-glow to-accent hover:from-accent hover:via-primary-glow hover:to-primary shadow-[0_10px_40px_-10px_rgba(59,130,246,0.6)] hover:shadow-[0_20px_60px_-10px_rgba(59,130,246,0.8)] transition-all duration-500 font-black text-base border border-white/20 group">
-                  <span className="relative z-10 flex items-center justify-center gap-2">
+                  <span className="relative z-10 flex items-center justify-center gap-2 uppercase">
                     Get Quote
                     <Sparkles className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
                   </span>

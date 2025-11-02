@@ -1,32 +1,36 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, ExternalLink } from "lucide-react";
+import { Star } from "lucide-react";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { useState, useEffect } from "react";
+import { API_ENDPOINTS } from "@/config/api";
 
-const googleReviews = [
-  {
-    name: "Rajesh Kumar",
-    content: "Excellent quality sports garments! Ordered custom jerseys for our cricket team and the quality exceeded expectations. Fast delivery and great customer service.",
-    rating: 5,
-    timeAgo: "2 weeks ago",
-  },
-  {
-    name: "Priya Menon",
-    content: "Best place for bulk sportswear orders. We've been ordering from Nisanth Sports Garments for our academy for over 2 years now. Never disappointed!",
-    rating: 5,
-    timeAgo: "1 month ago",
-  },
-  {
-    name: "Arjun Patel",
-    content: "Outstanding fabric quality and perfect stitching. The custom prints on our team hoodies look amazing even after multiple washes. Highly recommend!",
-    rating: 5,
-    timeAgo: "3 weeks ago",
-  },
-];
+interface Testimonial {
+  id: number;
+  name: string;
+  company: string;
+  message: string;
+  rating: number;
+  status: string;
+  created_at: string;
+}
 
 const Testimonials = () => {
+  const [ref, isVisible] = useIntersectionObserver();
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    fetch(API_ENDPOINTS.TESTIMONIALS)
+      .then(response => response.json())
+      .then(data => setTestimonials(data))
+      .catch(error => console.error('Error fetching testimonials:', error));
+  }, []);
+
   return (
-    <section className="py-20">
+    <section ref={ref} className="py-20 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
             What Our Clients Say
           </h2>
@@ -35,26 +39,41 @@ const Testimonials = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {googleReviews.map((review, index) => (
-            <Card key={index} className="border-border hover:shadow-[var(--shadow-lg)] transition-shadow duration-300">
-              <CardContent className="p-6">
-                <div className="flex mb-4">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} size={20} className="fill-accent text-accent" />
-                  ))}
-                </div>
-                <p className="text-muted-foreground mb-6 italic">
-                  "{review.content}"
-                </p>
-                <div className="flex justify-between items-center">
-                  <div className="font-semibold">{review.name}</div>
-                  <div className="text-sm text-muted-foreground">{review.timeAgo}</div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="relative">
+          <div className="flex animate-scroll-rtl gap-8">
+            {testimonials.length > 0 && testimonials.map((testimonial, index) => (
+              <Card 
+                key={`${testimonial.id}-${index}`}
+                className="min-w-[380px] bg-gradient-to-br from-white to-gray-50 border-2 border-primary/20 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 transform hover:-translate-y-2"
+              >
+                <CardContent className="p-8 relative">
+                  <div className="absolute top-4 right-4 text-primary/20 text-6xl font-serif">"</div>
+                  <div className="flex mb-6">
+                    {[...Array(Number(testimonial.rating))].map((_, i) => (
+                      <Star key={i} size={22} className="fill-yellow-400 text-yellow-400 drop-shadow-sm" />
+                    ))}
+                  </div>
+                  <div 
+                    className="text-gray-700 mb-8 text-lg leading-relaxed font-medium"
+                    dangerouslySetInnerHTML={{ __html: testimonial.message }}
+                  />
+                  <div className="border-t border-primary/20 pt-6">
+                    <div className="font-bold text-lg text-gray-900">{testimonial.name}</div>
+                    {testimonial.company && (
+                      <div className="text-primary font-semibold text-sm uppercase tracking-wide">{testimonial.company}</div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
+        
+        {testimonials.length === 0 && (
+          <div className="text-center text-muted-foreground">
+            <p>No testimonials available at the moment.</p>
+          </div>
+        )}
       </div>
     </section>
   );

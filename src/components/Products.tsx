@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import tshirtImage from "@/assets/tshirt.jpg";
 import tracksuitImage from "@/assets/tracksuit.jpg";
 import hoodieImage from "@/assets/hoodie.jpg";
@@ -30,10 +31,14 @@ const products = [
 ];
 
 const Products = () => {
+  const [ref, isVisible] = useIntersectionObserver();
+
   return (
-    <section className="py-20 bg-muted/30">
+    <section ref={ref} className="py-20 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
             Our Products
           </h2>
@@ -46,7 +51,10 @@ const Products = () => {
           {products.map((product, index) => (
             <Card 
               key={index} 
-              className="group overflow-hidden border-border hover:shadow-[var(--shadow-lg)] transition-all duration-300 hover:-translate-y-2"
+              className={`group overflow-hidden border-border hover:shadow-[var(--shadow-lg)] transition-all duration-700 hover:-translate-y-2 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: `${(index + 1) * 150}ms` }}
             >
               <CardContent className="p-0">
                 <div className="relative overflow-hidden aspect-square">
@@ -66,7 +74,9 @@ const Products = () => {
           ))}
         </div>
         
-        <div className="text-center">
+        <div className={`text-center transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`} style={{ transitionDelay: '800ms' }}>
           <Link to="/products">
             <Button size="lg" variant="outline" className="hover:bg-primary hover:text-primary-foreground">
               View All Products

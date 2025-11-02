@@ -9,6 +9,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { API_ENDPOINTS } from "@/config/api";
+
+import "../animations.css";
 
 const quoteSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
@@ -23,6 +27,8 @@ const quoteSchema = z.object({
 type QuoteFormData = z.infer<typeof quoteSchema>;
 
 const GetQuote = () => {
+  const [heroRef, heroVisible] = useIntersectionObserver();
+  const [formRef, formVisible] = useIntersectionObserver();
   const {
     register,
     handleSubmit,
@@ -34,12 +40,32 @@ const GetQuote = () => {
 
   const onSubmit = async (data: QuoteFormData) => {
     try {
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch(API_ENDPOINTS.SAVE_QUOTE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      
+      const responseText = await response.text();
+      console.log('Raw response:', responseText);
+      
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (e) {
+        throw new Error('Invalid response from server: ' + responseText);
+      }
+      
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send quote request');
+      }
       
       toast.success("Quote request sent successfully! We'll get back to you soon.");
       reset();
     } catch (error) {
+      console.error('Error sending quote:', error);
       toast.error("Failed to send quote request. Please try again.");
     }
   };
@@ -49,13 +75,72 @@ const GetQuote = () => {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-primary/10 via-background to-accent/10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={heroRef} className="pt-32 pb-16 bg-gradient-to-br from-primary/10 via-background to-accent/10 relative overflow-hidden">
+        {/* Business Elements Background */}
+        <div className="absolute inset-0">
+          {/* Currency Symbols */}
+          {['$', '€', '£', '₹'].map((symbol, i) => (
+            <div
+              key={i}
+              className="absolute text-6xl font-bold text-primary/10 animate-float"
+              style={{
+                left: `${15 + i * 20}%`,
+                top: `${20 + (i % 2) * 40}%`,
+                animationDelay: `${i * 1.2}s`,
+                animationDuration: `${8 + i * 2}s`
+              }}
+            >
+              {symbol}
+            </div>
+          ))}
+          
+          {/* Progress Indicators */}
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-16 h-2 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full animate-glow"
+              style={{
+                left: `${10 + i * 15}%`,
+                top: `${30 + (i % 3) * 20}%`,
+                animationDelay: `${i * 0.8}s`,
+                animationDuration: `${4 + i * 0.5}s`
+              }}
+            />
+          ))}
+          
+          {/* Business Charts */}
+          <div className="absolute top-1/4 right-1/4">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute bg-primary/15 animate-pulse"
+                style={{
+                  width: '8px',
+                  height: `${20 + i * 15}px`,
+                  left: `${i * 12}px`,
+                  bottom: '0',
+                  animationDelay: `${i * 0.3}s`,
+                  animationDuration: `${2 + i * 0.2}s`
+                }}
+              />
+            ))}
+          </div>
+          
+          {/* Commercial Orbs */}
+          <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-br from-primary/12 to-accent/12 blur-2xl animate-morphing" style={{ animationDuration: '18s' }}></div>
+          <div className="absolute bottom-20 right-20 w-24 h-24 bg-gradient-to-tl from-accent/10 to-primary/10 blur-xl animate-drift" style={{ animationDuration: '14s' }}></div>
+        </div>
+        
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent transition-all duration-1000 ${
+              heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`}>
               Get a Custom Quote
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className={`text-xl text-muted-foreground transition-all duration-1000 ${
+              heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            }`} style={{ transitionDelay: '300ms' }}>
               Tell us about your project and we'll provide you with a detailed quote within 24 hours
             </p>
           </div>
@@ -63,17 +148,44 @@ const GetQuote = () => {
       </section>
 
       {/* Form Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={formRef} className="py-16 relative overflow-hidden">
+        {/* Form Processing Background */}
+        <div className="absolute inset-0">
+          {/* Data Processing Dots */}
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-3 h-3 bg-gradient-to-r from-primary/30 to-accent/30 rounded-full animate-drift"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${i * 0.4}s`,
+                animationDuration: `${6 + Math.random() * 4}s`
+              }}
+            />
+          ))}
+          
+          {/* Quote Calculation Elements */}
+          <div className="absolute top-1/3 left-10 w-20 h-20 border-2 border-primary/20 rounded-full animate-spin" style={{ animationDuration: '20s' }}></div>
+          <div className="absolute bottom-1/3 right-10 w-16 h-16 border border-accent/20 animate-ping" style={{ animationDuration: '4s' }}></div>
+          
+          {/* Business Flow */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-primary/8 to-accent/8 blur-3xl animate-morphing" style={{ animationDuration: '22s' }}></div>
+        </div>
+        
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
-            <Card>
-              <CardHeader>
-                <CardTitle>Request a Quote</CardTitle>
+            <Card className={`hover:shadow-[var(--shadow-glow)] transition-all duration-700 relative overflow-hidden ${
+              formVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+            }`}>
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-accent/3 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              <CardHeader className="relative">
+                <CardTitle className="animate-glow" style={{ animationDelay: '0.5s' }}>Request a Quote</CardTitle>
                 <CardDescription>
                   Fill out the form below and our team will get back to you with a competitive quote
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="relative">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name *</Label>

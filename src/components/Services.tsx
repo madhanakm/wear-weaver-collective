@@ -1,4 +1,5 @@
 import { Palette, Zap, Shield, Users } from "lucide-react";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 const services = [
   {
@@ -24,10 +25,14 @@ const services = [
 ];
 
 const Services = () => {
+  const [ref, isVisible] = useIntersectionObserver();
+
   return (
-    <section className="py-20">
+    <section ref={ref} className="py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
             Why Choose Us
           </h2>
@@ -42,7 +47,10 @@ const Services = () => {
             return (
               <div
                 key={index}
-                className="group p-8 rounded-lg border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-[var(--shadow-lg)] hover:-translate-y-2"
+                className={`group p-8 rounded-lg border border-border hover:border-primary/50 transition-all duration-700 hover:shadow-[var(--shadow-lg)] hover:-translate-y-2 ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${(index + 1) * 150}ms` }}
               >
                 <div className="inline-flex p-4 rounded-full bg-primary/10 text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Icon size={32} />

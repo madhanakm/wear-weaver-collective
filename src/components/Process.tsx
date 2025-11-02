@@ -1,4 +1,5 @@
 import { MessageSquare, Palette, Cog, Package } from "lucide-react";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 const steps = [
   {
@@ -28,10 +29,14 @@ const steps = [
 ];
 
 const Process = () => {
+  const [ref, isVisible] = useIntersectionObserver();
+
   return (
-    <section className="py-20 bg-muted/30">
+    <section ref={ref} className="py-20 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className={`text-center mb-16 transition-all duration-700 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
             How It Works
           </h2>
@@ -44,7 +49,13 @@ const Process = () => {
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <div key={index} className="relative">
+              <div 
+                key={index} 
+                className={`relative transition-all duration-700 ${
+                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${(index + 1) * 150}ms` }}
+              >
                 {/* Connecting Line */}
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-16 left-full w-full h-0.5 bg-gradient-to-r from-primary/50 to-transparent" />

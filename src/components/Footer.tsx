@@ -1,5 +1,6 @@
-import { Sparkles, Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+import logoImage from "@/assets/nsg_logo.png";
 
 const Footer = () => {
   return (
@@ -21,18 +22,15 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-16">
           {/* Brand Section */}
           <div className="space-y-7 lg:col-span-1">
-            <div className="flex items-start gap-4 group">
-              <div className="relative flex-shrink-0">
+            <div className="flex justify-center group">
+              <div className="relative">
                 <div className="absolute -inset-3 bg-gradient-to-br from-primary via-accent to-primary-glow rounded-2xl blur-2xl opacity-30 group-hover:opacity-60 transition-all duration-500 animate-pulse"></div>
-                <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary via-primary-glow to-accent flex items-center justify-center shadow-[0_20px_60px_-15px_rgba(59,130,246,0.7)] border border-white/20">
-                  <Sparkles className="w-8 h-8 text-white drop-shadow-lg" />
-                </div>
-              </div>
-              <div className="flex-1">
-                <h3 className="text-3xl font-black bg-gradient-to-r from-primary-glow via-accent to-primary bg-clip-text text-transparent mb-1">Nisanth Sports</h3>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="h-px w-10 bg-gradient-to-r from-primary to-accent"></div>
-                  <p className="text-[10px] text-secondary-foreground/70 font-bold tracking-[0.25em] uppercase">Premium Sportswear</p>
+                <div className="relative w-20 h-20 rounded-2xl bg-white flex items-center justify-center shadow-[0_20px_60px_-15px_rgba(197,158,79,0.7)] border border-primary/20">
+                  <img 
+                    src={logoImage} 
+                    alt="NSG Logo" 
+                    className="w-16 h-16 object-contain"
+                  />
                 </div>
               </div>
             </div>
@@ -57,7 +55,7 @@ const Footer = () => {
           
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold mb-6 text-lg bg-gradient-to-r from-primary-glow to-accent bg-clip-text text-transparent">Quick Links</h4>
+            <h4 className="font-bold mb-6 text-lg text-primary">Quick Links</h4>
             <ul className="space-y-3">
               <li><Link to="/" className="text-secondary-foreground/70 hover:text-primary transition-all duration-200 flex items-center gap-2 group hover:translate-x-1"><span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary transition-colors"></span>Home</Link></li>
               <li><Link to="/gallery" className="text-secondary-foreground/70 hover:text-primary transition-all duration-200 flex items-center gap-2 group hover:translate-x-1"><span className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary transition-colors"></span>Gallery</Link></li>
@@ -68,7 +66,7 @@ const Footer = () => {
           
           {/* Products */}
           <div>
-            <h4 className="font-bold mb-6 text-lg bg-gradient-to-r from-primary-glow to-accent bg-clip-text text-transparent">Our Products</h4>
+            <h4 className="font-bold mb-6 text-lg text-primary">Our Products</h4>
             <ul className="space-y-3 text-secondary-foreground/70">
               <li className="hover:text-primary transition-all duration-200 cursor-pointer flex items-center gap-2 group hover:translate-x-1"><span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors"></span>Custom T-Shirts</li>
               <li className="hover:text-primary transition-all duration-200 cursor-pointer flex items-center gap-2 group hover:translate-x-1"><span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors"></span>Sports Tracksuits</li>
@@ -79,7 +77,7 @@ const Footer = () => {
           
           {/* Contact Info */}
           <div>
-            <h4 className="font-bold mb-6 text-lg bg-gradient-to-r from-primary-glow to-accent bg-clip-text text-transparent">Contact Us</h4>
+            <h4 className="font-bold mb-6 text-lg text-primary">Contact Us</h4>
             <ul className="space-y-5">
               <li className="flex items-start gap-3 text-secondary-foreground/70 group hover:text-secondary-foreground transition-colors">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-colors">
