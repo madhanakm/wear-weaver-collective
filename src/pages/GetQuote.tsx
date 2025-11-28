@@ -174,121 +174,175 @@ const GetQuote = () => {
         </div>
         
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto">
-            <Card className={`hover:shadow-[var(--shadow-glow)] transition-all duration-700 relative overflow-hidden ${
+          <div className="max-w-4xl mx-auto">
+            <Card className={`hover:shadow-2xl hover:shadow-primary/10 transition-all duration-700 relative overflow-hidden border-2 border-border/50 hover:border-primary/30 backdrop-blur-sm bg-background/95 ${
               formVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             }`}>
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/3 to-accent/3 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-              <CardHeader className="relative">
-                <CardTitle className="animate-glow" style={{ animationDelay: '0.5s' }}>Request a Quote</CardTitle>
-                <CardDescription>
-                  Fill out the form below and our team will get back to you with a competitive quote
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-primary"></div>
+              
+              <CardHeader className="relative text-center pb-8">
+                <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-glow" style={{ animationDelay: '0.5s' }}>Request a Quote</CardTitle>
+                <CardDescription className="text-lg mt-3">
+                  Fill out the form below and our team will get back to you with a competitive quote within 24 hours
                 </CardDescription>
               </CardHeader>
-              <CardContent className="relative">
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name *</Label>
-                    <Input
-                      id="name"
-                      placeholder="John Doe"
-                      {...register("name")}
-                      className={errors.name ? "border-destructive" : ""}
-                    />
-                    {errors.name && (
-                      <p className="text-sm text-destructive">{errors.name.message}</p>
-                    )}
+              
+              <CardContent className="relative px-8 pb-8">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                  {/* Personal Information Section */}
+                  <div className="space-y-6">
+                    <h3 className="text-xl font-semibold text-primary border-b border-primary/20 pb-2">Personal Information</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        <Label htmlFor="name" className="text-sm font-semibold text-foreground/80">Full Name *</Label>
+                        <Input
+                          id="name"
+                          placeholder="Enter your full name"
+                          {...register("name")}
+                          className={`h-12 border-2 transition-all duration-300 focus:border-primary focus:shadow-lg focus:shadow-primary/20 ${
+                            errors.name ? "border-destructive" : "border-border/50 hover:border-primary/50"
+                          }`}
+                        />
+                        {errors.name && (
+                          <p className="text-sm text-destructive flex items-center gap-1">
+                            <span className="w-1 h-1 bg-destructive rounded-full"></span>
+                            {errors.name.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-3">
+                        <Label htmlFor="email" className="text-sm font-semibold text-foreground/80">Email Address *</Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="your.email@company.com"
+                          {...register("email")}
+                          className={`h-12 border-2 transition-all duration-300 focus:border-primary focus:shadow-lg focus:shadow-primary/20 ${
+                            errors.email ? "border-destructive" : "border-border/50 hover:border-primary/50"
+                          }`}
+                        />
+                        {errors.email && (
+                          <p className="text-sm text-destructive flex items-center gap-1">
+                            <span className="w-1 h-1 bg-destructive rounded-full"></span>
+                            {errors.email.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-3">
+                        <Label htmlFor="phone" className="text-sm font-semibold text-foreground/80">Phone Number *</Label>
+                        <Input
+                          id="phone"
+                          type="tel"
+                          placeholder="+91 98765 43210"
+                          {...register("phone")}
+                          className={`h-12 border-2 transition-all duration-300 focus:border-primary focus:shadow-lg focus:shadow-primary/20 ${
+                            errors.phone ? "border-destructive" : "border-border/50 hover:border-primary/50"
+                          }`}
+                        />
+                        {errors.phone && (
+                          <p className="text-sm text-destructive flex items-center gap-1">
+                            <span className="w-1 h-1 bg-destructive rounded-full"></span>
+                            {errors.phone.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-3">
+                        <Label htmlFor="company" className="text-sm font-semibold text-foreground/80">Company Name</Label>
+                        <Input
+                          id="company"
+                          placeholder="Your Company Name"
+                          {...register("company")}
+                          className="h-12 border-2 border-border/50 hover:border-primary/50 transition-all duration-300 focus:border-primary focus:shadow-lg focus:shadow-primary/20"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="john@example.com"
-                      {...register("email")}
-                      className={errors.email ? "border-destructive" : ""}
-                    />
-                    {errors.email && (
-                      <p className="text-sm text-destructive">{errors.email.message}</p>
-                    )}
+                  {/* Project Details Section */}
+                  <div className="space-y-6">
+                    <h3 className="text-xl font-semibold text-primary border-b border-primary/20 pb-2">Project Details</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        <Label htmlFor="productType" className="text-sm font-semibold text-foreground/80">Product Type *</Label>
+                        <select
+                          id="productType"
+                          {...register("productType")}
+                          className={`h-12 w-full rounded-md border-2 transition-all duration-300 focus:border-primary focus:shadow-lg focus:shadow-primary/20 ${
+                            errors.productType ? "border-destructive" : "border-border/50 hover:border-primary/50"
+                          } bg-background px-4 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+                        >
+                          <option value="">Select a product type</option>
+                          <option value="t-shirts">Custom T-Shirts</option>
+                          <option value="tracksuits">Sports Tracksuits</option>
+                          <option value="hoodies">Athletic Hoodies</option>
+                          <option value="sportswear">Team Sportswear</option>
+                          <option value="other">Other</option>
+                        </select>
+                        {errors.productType && (
+                          <p className="text-sm text-destructive flex items-center gap-1">
+                            <span className="w-1 h-1 bg-destructive rounded-full"></span>
+                            {errors.productType.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-3">
+                        <Label htmlFor="quantity" className="text-sm font-semibold text-foreground/80">Estimated Quantity *</Label>
+                        <Input
+                          id="quantity"
+                          type="text"
+                          placeholder="e.g., 100 pieces"
+                          {...register("quantity")}
+                          className={`h-12 border-2 transition-all duration-300 focus:border-primary focus:shadow-lg focus:shadow-primary/20 ${
+                            errors.quantity ? "border-destructive" : "border-border/50 hover:border-primary/50"
+                          }`}
+                        />
+                        {errors.quantity && (
+                          <p className="text-sm text-destructive flex items-center gap-1">
+                            <span className="w-1 h-1 bg-destructive rounded-full"></span>
+                            {errors.quantity.message}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <Label htmlFor="message" className="text-sm font-semibold text-foreground/80">Project Details & Requirements *</Label>
+                      <Textarea
+                        id="message"
+                        placeholder="Tell us about your requirements, design preferences, colors, sizes, timeline, budget range, and any special instructions..."
+                        rows={6}
+                        {...register("message")}
+                        className={`border-2 transition-all duration-300 focus:border-primary focus:shadow-lg focus:shadow-primary/20 resize-none ${
+                          errors.message ? "border-destructive" : "border-border/50 hover:border-primary/50"
+                        }`}
+                      />
+                      {errors.message && (
+                        <p className="text-sm text-destructive flex items-center gap-1">
+                          <span className="w-1 h-1 bg-destructive rounded-full"></span>
+                          {errors.message.message}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="+1 234 567 8900"
-                      {...register("phone")}
-                      className={errors.phone ? "border-destructive" : ""}
-                    />
-                    {errors.phone && (
-                      <p className="text-sm text-destructive">{errors.phone.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="company">Company Name</Label>
-                    <Input
-                      id="company"
-                      placeholder="Your Company"
-                      {...register("company")}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="productType">Product Type *</Label>
-                    <select
-                      id="productType"
-                      {...register("productType")}
-                      className={`flex h-10 w-full rounded-md border ${
-                        errors.productType ? "border-destructive" : "border-input"
-                      } bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+                  <div className="pt-4">
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-primary to-accent hover:from-accent hover:to-primary transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-primary/25 transform hover:scale-[1.02] relative overflow-hidden group" 
+                      disabled={isSubmitting}
                     >
-                      <option value="">Select a product type</option>
-                      <option value="t-shirts">Custom T-Shirts</option>
-                      <option value="tracksuits">Sports Tracksuits</option>
-                      <option value="hoodies">Athletic Hoodies</option>
-                      <option value="sportswear">Team Sportswear</option>
-                      <option value="other">Other</option>
-                    </select>
-                    {errors.productType && (
-                      <p className="text-sm text-destructive">{errors.productType.message}</p>
-                    )}
+                      <span className="relative z-10">
+                        {isSubmitting ? "Sending Quote Request..." : "Submit Quote Request"}
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+                    </Button>
                   </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="quantity">Estimated Quantity *</Label>
-                    <Input
-                      id="quantity"
-                      type="text"
-                      placeholder="e.g., 100 pieces"
-                      {...register("quantity")}
-                      className={errors.quantity ? "border-destructive" : ""}
-                    />
-                    {errors.quantity && (
-                      <p className="text-sm text-destructive">{errors.quantity.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Project Details *</Label>
-                    <Textarea
-                      id="message"
-                      placeholder="Tell us about your requirements, design preferences, timeline, etc."
-                      rows={5}
-                      {...register("message")}
-                      className={errors.message ? "border-destructive" : ""}
-                    />
-                    {errors.message && (
-                      <p className="text-sm text-destructive">{errors.message.message}</p>
-                    )}
-                  </div>
-
-                  <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? "Sending..." : "Submit Quote Request"}
-                  </Button>
                 </form>
               </CardContent>
             </Card>

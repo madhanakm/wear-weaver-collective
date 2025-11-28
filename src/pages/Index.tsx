@@ -4,6 +4,7 @@ import Stats from "@/components/Stats";
 import Products from "@/components/Products";
 import Process from "@/components/Process";
 import Services from "@/components/Services";
+import Clients from "@/components/Clients";
 import Testimonials from "@/components/Testimonials";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
@@ -15,6 +16,7 @@ const Index = () => {
   const [productsRef, productsVisible] = useIntersectionObserver();
   const [processRef, processVisible] = useIntersectionObserver();
   const [servicesRef, servicesVisible] = useIntersectionObserver();
+  const [clientsRef, clientsVisible] = useIntersectionObserver();
   const [testimonialsRef, testimonialsVisible] = useIntersectionObserver();
   const [ctaRef, ctaVisible] = useIntersectionObserver();
 
@@ -113,11 +115,21 @@ const Index = () => {
       </div>
       
       <div 
+        ref={clientsRef}
+        className={`transition-all duration-1000 ${
+          clientsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+        }`}
+        style={{ transitionDelay: '800ms' }}
+      >
+        <Clients />
+      </div>
+      
+      <div 
         ref={testimonialsRef}
         className={`transition-all duration-1000 ${
           testimonialsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
         }`}
-        style={{ transitionDelay: '800ms' }}
+        style={{ transitionDelay: '1000ms' }}
       >
         <Testimonials />
       </div>
@@ -127,7 +139,7 @@ const Index = () => {
         className={`transition-all duration-1000 ${
           ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
         }`}
-        style={{ transitionDelay: '1000ms' }}
+        style={{ transitionDelay: '1200ms' }}
       >
         <CTA />
       </div>

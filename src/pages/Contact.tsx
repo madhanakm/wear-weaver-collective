@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Instagram, Youtube, Facebook } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
@@ -16,22 +16,22 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    content: "info@sportswearpro.com",
+    content: "nisanthapparelsnsg@gmail.com",
   },
   {
     icon: Phone,
     title: "Phone",
-    content: "+1 (555) 123-4567",
+    content: "+91 9876543210",
   },
   {
     icon: MapPin,
     title: "Address",
-    content: "123 Manufacturing St, Industrial Zone, City",
+    content: "27, Bridge Way Colony Extension, Govindammal Layout, Vk Puram, Tiruppur, Tamil Nadu 641602",
   },
   {
     icon: Clock,
     title: "Business Hours",
-    content: "Mon-Fri: 9AM - 6PM",
+    content: "Mon-Sat: 9AM - 6PM",
   },
 ];
 
@@ -267,6 +267,17 @@ const Contact = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                 <CardContent className="p-8 relative">
                   <h2 className="text-3xl font-bold mb-6 text-center">Send Us a Message</h2>
+                  <div className="flex justify-center gap-4 mb-6">
+                    <a href="https://www.instagram.com/nisanth_apparels?igsh=MTJiajkwaGQxdnA2cQ%3D%3D" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gradient-to-br from-pink-500/20 to-purple-500/20 hover:from-pink-500/30 hover:to-purple-500/30 transition-all duration-300 hover:scale-110">
+                      <Instagram className="w-5 h-5 text-pink-500" />
+                    </a>
+                    <a href="https://www.youtube.com/@nisanthapparels?si=1pJMeGwTTgHqqh6A" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gradient-to-br from-red-500/20 to-red-600/20 hover:from-red-500/30 hover:to-red-600/30 transition-all duration-300 hover:scale-110">
+                      <Youtube className="w-5 h-5 text-red-500" />
+                    </a>
+                    <a href="https://www.facebook.com/share/1CKY7Ubf58/" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-600/20 hover:from-blue-500/30 hover:to-blue-600/30 transition-all duration-300 hover:scale-110">
+                      <Facebook className="w-5 h-5 text-blue-500" />
+                    </a>
+                  </div>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>

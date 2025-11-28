@@ -5,56 +5,42 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { CheckCircle, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { API_ENDPOINTS } from "@/config/api";
 import "../animations.css";
-import tshirtImage from "@/assets/tshirt.jpg";
-import tracksuitImage from "@/assets/tracksuit.jpg";
-import hoodieImage from "@/assets/hoodie.jpg";
-import sportswearImage from "@/assets/sportswear.jpg";
-import schoolTshirtImage from "@/assets/School-T-shirts.png";
-import sublimationTshirtImage from "@/assets/Sublimation-T-shirt.png";
 
-const products = [
-  {
-    name: "Custom T-Shirts",
-    description: "Premium quality fabric with unlimited customization options. Perfect for teams, events, and promotional activities.",
-    features: ["100% Cotton", "Custom Printing", "All Sizes Available", "Bulk Orders"],
-    image: tshirtImage,
-  },
-  {
-    name: "Sports Tracksuits",
-    description: "Performance-driven designs for teams and individuals. Comfortable and durable for all athletic activities.",
-    features: ["Moisture Wicking", "Team Customization", "Professional Grade", "Multiple Colors"],
-    image: tracksuitImage,
-  },
-  {
-    name: "Athletic Hoodies",
-    description: "Comfortable and stylish for any activity. Perfect for casual wear and team uniforms.",
-    features: ["Soft Fleece", "Custom Logos", "Durable Quality", "Warm & Comfortable"],
-    image: hoodieImage,
-  },
-  {
-    name: "Team Sportswear",
-    description: "Professional-grade uniforms and athletic apparel for sports teams and organizations.",
-    features: ["Professional Design", "Team Branding", "High Performance", "Custom Fit"],
-    image: sportswearImage,
-  },
-  {
-    name: "School Uniform T-shirts",
-    description: "High-quality school uniform t-shirts designed for comfort and durability. Perfect for educational institutions.",
-    features: ["School Compliant", "Durable Fabric", "Easy Care", "Bulk Pricing"],
-    image: schoolTshirtImage,
-  },
-  {
-    name: "Sublimation T-shirts",
-    description: "Full-color sublimation printing for vibrant, long-lasting designs that won't fade or crack.",
-    features: ["Full Color Print", "Fade Resistant", "Soft Feel", "Custom Designs"],
-    image: sublimationTshirtImage,
-  },
-];
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  image_url: string;
+  status: string;
+  created_at: string;
+}
 
 const Products = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [heroRef, heroVisible] = useIntersectionObserver();
   const [productsRef, productsVisible] = useIntersectionObserver();
+  const productsPerPage = 6;
+
+  useEffect(() => {
+    fetch(API_ENDPOINTS.PRODUCTS)
+      .then(response => response.json())
+      .then(data => {
+        setProducts(data);
+        setTotalPages(Math.ceil(data.length / productsPerPage));
+      })
+      .catch(error => console.error('Error fetching products:', error));
+  }, []);
+
+  const getCurrentPageProducts = () => {
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
+    return products.slice(startIndex, endIndex);
+  };
 
   return (
     <div className="min-h-screen">
@@ -162,7 +148,7 @@ const Products = () => {
         
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {products.map((product, index) => (
+            {getCurrentPageProducts().map((product, index) => (
               <Card 
                 key={index} 
                 className={`group overflow-hidden border-border hover:shadow-[var(--shadow-lg)] hover:border-primary/30 transition-all duration-700 hover:-translate-y-2 ${
@@ -174,7 +160,7 @@ const Products = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
                     <div className="relative aspect-square lg:aspect-auto overflow-hidden">
                       <img
-                        src={product.image}
+                        src={product.image_url}
                         alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
@@ -183,19 +169,11 @@ const Products = () => {
                     <div className="p-8 flex flex-col justify-between bg-gradient-to-br from-background to-muted/30">
                       <div>
                         <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">{product.name}</h3>
-                        <p className="text-muted-foreground mb-6 leading-relaxed">{product.description}</p>
-                        <div className="space-y-3 mb-8">
-                          {product.features.map((feature, featureIndex) => (
-                            <div key={featureIndex} className="flex items-center gap-3">
-                              <div className="w-2 h-2 bg-gradient-to-r from-primary to-accent rounded-full flex-shrink-0"></div>
-                              <span className="text-sm font-medium">{feature}</span>
-                            </div>
-                          ))}
-                        </div>
+                        <p className="text-muted-foreground mb-8 leading-relaxed">{product.description}</p>
                       </div>
-                      <Link to="/get-quote" className="mt-auto">
+                      <Link to={`/product/${product.id}`} className="mt-auto">
                         <Button className="w-full group-hover:shadow-[var(--shadow-primary)] transition-all duration-300">
-                          Get Quote
+                          View Details
                           <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                         </Button>
                       </Link>
@@ -205,6 +183,24 @@ const Products = () => {
               </Card>
             ))}
           </div>
+          
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-12 gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-4 py-2 rounded-lg transition-colors ${
+                    currentPage === page
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-secondary text-secondary-foreground hover:bg-primary/10'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

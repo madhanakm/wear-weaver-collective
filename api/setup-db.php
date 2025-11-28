@@ -64,6 +64,27 @@ try {
     )";
     $pdo->exec($sql);
     
+    // Create gallery table
+    $sql = "CREATE TABLE IF NOT EXISTS gallery (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(200) NOT NULL,
+        image_url VARCHAR(500) NOT NULL,
+        category VARCHAR(50) DEFAULT 'general',
+        status ENUM('active', 'inactive') DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )";
+    $pdo->exec($sql);
+    
+    // Create clients table
+    $sql = "CREATE TABLE IF NOT EXISTS clients (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(200) NOT NULL,
+        logo_url VARCHAR(500) NOT NULL,
+        status ENUM('active', 'inactive') DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )";
+    $pdo->exec($sql);
+    
     echo json_encode(['success' => true, 'message' => 'Database setup completed with all tables!']);
     
 } catch(PDOException $e) {

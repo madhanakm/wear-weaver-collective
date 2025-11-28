@@ -92,6 +92,12 @@ $page = $_GET['page'] ?? 'contacts';
             <a href="?page=testimonials" <?php echo $page === 'testimonials' ? 'class="active"' : ''; ?>>
                 <i class="fas fa-star"></i> Testimonials
             </a>
+            <a href="?page=gallery" <?php echo $page === 'gallery' ? 'class="active"' : ''; ?>>
+                <i class="fas fa-images"></i> Gallery
+            </a>
+            <a href="?page=clients" <?php echo $page === 'clients' ? 'class="active"' : ''; ?>>
+                <i class="fas fa-handshake"></i> Clients
+            </a>
             <a href="?page=password" <?php echo $page === 'password' ? 'class="active"' : ''; ?>>
                 <i class="fas fa-key"></i> Change Password
             </a>
@@ -605,6 +611,297 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "    const name = row.querySelector('.testimonial-name').textContent.toLowerCase();";
                 echo "    const company = row.querySelector('.testimonial-company').textContent.toLowerCase();";
                 echo "    if (name.includes(searchTerm) || company.includes(searchTerm)) {";
+                echo "      row.style.display = '';";
+                echo "    } else {";
+                echo "      row.style.display = 'none';";
+                echo "    }";
+                echo "  });";
+                echo "}";
+                echo "</script>";
+                
+            } elseif ($page === 'gallery') {
+                echo "<h2>Gallery Management</h2>";
+                echo "<div style='margin: 20px 0; display: flex; justify-content: space-between; align-items: center;'>";
+                echo "<button onclick='showAddGallery()' style='background: #007cba; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;'>Add New Image</button>";
+                echo "<input type='text' id='searchGallery' placeholder='Search title or category...' style='padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; width: 250px;' onkeyup='filterGallery()'>";
+                echo "</div>";
+                
+                echo "<div id='galleryForm' style='display: none; background: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 5px;'>";
+                echo "<h3 id='galleryFormTitle'>Add New Image</h3>";
+                echo "<form onsubmit='saveGallery(event)'>";
+                echo "<input type='hidden' id='galleryId' value=''>";
+                echo "<input type='text' id='galleryTitle' placeholder='Image Title' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;' required>";
+                echo "<div style='margin: 10px 0;'>";
+                echo "<label style='display: block; margin-bottom: 5px; font-weight: bold;'>Image:</label>";
+                echo "<input type='file' id='galleryImageFile' accept='image/*' style='margin-bottom: 10px;' onchange='uploadGalleryImage()'>";
+                echo "<input type='url' id='galleryImageUrl' placeholder='Or enter image URL' style='width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;' required>";
+                echo "<div id='galleryImagePreview' style='margin-top: 10px;'></div>";
+                echo "</div>";
+                echo "<select id='galleryCategory' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;'>";
+                echo "<option value='general'>General</option>";
+                echo "<option value='products'>Products</option>";
+                echo "<option value='team'>Team</option>";
+                echo "<option value='events'>Events</option>";
+                echo "</select>";
+                echo "<select id='galleryStatus' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;'>";
+                echo "<option value='active'>Active</option>";
+                echo "<option value='inactive'>Inactive</option>";
+                echo "</select>";
+                echo "<button type='submit' style='background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;'>Save</button>";
+                echo "<button type='button' onclick='cancelGallery()' style='background: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;'>Cancel</button>";
+                echo "</form>";
+                echo "</div>";
+                
+                $stmt = $pdo->query("SELECT * FROM gallery ORDER BY created_at DESC");
+                $gallery = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                if (count($gallery) > 0) {
+                    echo "<table id='galleryTable'>";
+                    echo "<tr><th>S. No</th><th>Image</th><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr>";
+                    
+                    foreach ($gallery as $row) {
+                        echo "<tr class='gallery-row'>";
+                        echo "<td>" . $row['id'] . "</td>";
+                        echo "<td><img src='" . htmlspecialchars($row['image_url']) . "' style='width: 60px; height: 60px; object-fit: cover; border-radius: 4px;'></td>";
+                        echo "<td class='gallery-title'>" . htmlspecialchars($row['title']) . "</td>";
+                        echo "<td class='gallery-category'>" . htmlspecialchars($row['category']) . "</td>";
+                        echo "<td><span style='padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; " . ($row['status'] === 'active' ? 'background: #d4edda; color: #155724;' : 'background: #f8d7da; color: #721c24;') . "'>" . ucfirst($row['status']) . "</span></td>";
+                        echo "<td>" . date('M j, Y', strtotime($row['created_at'])) . "</td>";
+                        echo "<td style='white-space: nowrap;'>";
+                        echo "<button onclick='editGallery({$row['id']})' style='background: #007cba; color: white; border: none; padding: 6px 8px; border-radius: 4px; margin-right: 5px; cursor: pointer; font-size: 14px;' title='Edit'><i class='fas fa-edit'></i></button>";
+                        echo "<button onclick='if(confirm(\"Delete this image?\")) deleteGallery({$row['id']})' style='background: #dc3545; color: white; border: none; padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 14px;' title='Delete'><i class='fas fa-trash'></i></button>";
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<p>No gallery images found.</p>";
+                }
+                
+                echo "<script>";
+                echo "function uploadGalleryImage() {";
+                echo "  const file = document.getElementById('galleryImageFile').files[0];";
+                echo "  if (!file) return;";
+                echo "  const formData = new FormData();";
+                echo "  formData.append('image', file);";
+                echo "  fetch('http://localhost/api/upload-image.php', {";
+                echo "    method: 'POST',";
+                echo "    body: formData";
+                echo "  }).then(r => r.json()).then(data => {";
+                echo "    if (data.success) {";
+                echo "      document.getElementById('galleryImageUrl').value = data.url;";
+                echo "      document.getElementById('galleryImagePreview').innerHTML = '<img src=\"' + data.url + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\">';";
+                echo "    } else {";
+                echo "      alert('Upload failed: ' + data.error);";
+                echo "    }";
+                echo "  });";
+                echo "}";
+                echo "function showAddGallery() {";
+                echo "  document.getElementById('galleryFormTitle').textContent = 'Add New Image';";
+                echo "  document.getElementById('galleryId').value = '';";
+                echo "  document.getElementById('galleryTitle').value = '';";
+                echo "  document.getElementById('galleryImageUrl').value = '';";
+                echo "  document.getElementById('galleryImageFile').value = '';";
+                echo "  document.getElementById('galleryImagePreview').innerHTML = '';";
+                echo "  document.getElementById('galleryCategory').value = 'general';";
+                echo "  document.getElementById('galleryStatus').value = 'active';";
+                echo "  document.getElementById('galleryForm').style.display = 'block';";
+                echo "}";
+                echo "function editGallery(id) {";
+                echo "  fetch('http://localhost/api/gallery-api.php?path=admin')";
+                echo "    .then(r => r.json())";
+                echo "    .then(data => {";
+                echo "      const item = data.find(g => g.id == id);";
+                echo "      if (item) {";
+                echo "        document.getElementById('galleryFormTitle').textContent = 'Edit Image';";
+                echo "        document.getElementById('galleryId').value = item.id;";
+                echo "        document.getElementById('galleryTitle').value = item.title;";
+                echo "        document.getElementById('galleryImageUrl').value = item.image_url;";
+                echo "        document.getElementById('galleryImageFile').value = '';";
+                echo "        document.getElementById('galleryImagePreview').innerHTML = '<img src=\"' + item.image_url + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\">';";
+                echo "        document.getElementById('galleryCategory').value = item.category;";
+                echo "        document.getElementById('galleryStatus').value = item.status;";
+                echo "        document.getElementById('galleryForm').style.display = 'block';";
+                echo "      }";
+                echo "    });";
+                echo "}";
+                echo "function deleteGallery(id) {";
+                echo "  fetch('http://localhost/api/gallery-api.php?path=delete/' + id, { method: 'DELETE' })";
+                echo "    .then(r => r.json())";
+                echo "    .then(data => {";
+                echo "      if (data.success) {";
+                echo "        location.reload();";
+                echo "      } else {";
+                echo "        alert('Error: ' + (data.error || 'Failed to delete image'));";
+                echo "      }";
+                echo "    });";
+                echo "}";
+                echo "function saveGallery(e) {";
+                echo "  e.preventDefault();";
+                echo "  const id = document.getElementById('galleryId').value;";
+                echo "  const url = id ? 'http://localhost/api/gallery-api.php?path=update/' + id : 'http://localhost/api/gallery-api.php?path=create';";
+                echo "  const method = id ? 'PUT' : 'POST';";
+                echo "  fetch(url, {";
+                echo "    method: method,";
+                echo "    headers: {'Content-Type': 'application/json'},";
+                echo "    body: JSON.stringify({";
+                echo "      title: document.getElementById('galleryTitle').value,";
+                echo "      image_url: document.getElementById('galleryImageUrl').value,";
+                echo "      category: document.getElementById('galleryCategory').value,";
+                echo "      status: document.getElementById('galleryStatus').value";
+                echo "    })";
+                echo "  }).then(() => location.reload());";
+                echo "}";
+                echo "function cancelGallery() {";
+                echo "  document.getElementById('galleryForm').style.display = 'none';";
+                echo "}";
+                echo "function filterGallery() {";
+                echo "  const searchTerm = document.getElementById('searchGallery').value.toLowerCase();";
+                echo "  const rows = document.querySelectorAll('.gallery-row');";
+                echo "  rows.forEach(row => {";
+                echo "    const title = row.querySelector('.gallery-title').textContent.toLowerCase();";
+                echo "    const category = row.querySelector('.gallery-category').textContent.toLowerCase();";
+                echo "    if (title.includes(searchTerm) || category.includes(searchTerm)) {";
+                echo "      row.style.display = '';";
+                echo "    } else {";
+                echo "      row.style.display = 'none';";
+                echo "    }";
+                echo "  });";
+                echo "}";
+                echo "</script>";
+                
+            } elseif ($page === 'clients') {
+                echo "<h2>Clients Management</h2>";
+                echo "<div style='margin: 20px 0; display: flex; justify-content: space-between; align-items: center;'>";
+                echo "<button onclick='showAddClient()' style='background: #007cba; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;'>Add New Client</button>";
+                echo "<input type='text' id='searchClients' placeholder='Search client name...' style='padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; width: 250px;' onkeyup='filterClients()'>";
+                echo "</div>";
+                
+                echo "<div id='clientForm' style='display: none; background: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 5px;'>";
+                echo "<h3 id='clientFormTitle'>Add New Client</h3>";
+                echo "<form onsubmit='saveClient(event)'>";
+                echo "<input type='hidden' id='clientId' value=''>";
+                echo "<input type='text' id='clientName' placeholder='Client Name' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;' required>";
+                echo "<div style='margin: 10px 0;'>";
+                echo "<label style='display: block; margin-bottom: 5px; font-weight: bold;'>Logo:</label>";
+                echo "<input type='file' id='clientLogoFile' accept='image/*' style='margin-bottom: 10px;' onchange='uploadClientLogo()'>";
+                echo "<input type='url' id='clientLogoUrl' placeholder='Or enter logo URL' style='width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;' required>";
+                echo "<div id='clientLogoPreview' style='margin-top: 10px;'></div>";
+                echo "</div>";
+                echo "<select id='clientStatus' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;'>";
+                echo "<option value='active'>Active</option>";
+                echo "<option value='inactive'>Inactive</option>";
+                echo "</select>";
+                echo "<button type='submit' style='background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;'>Save</button>";
+                echo "<button type='button' onclick='cancelClient()' style='background: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;'>Cancel</button>";
+                echo "</form>";
+                echo "</div>";
+                
+                $stmt = $pdo->query("SELECT * FROM clients ORDER BY created_at DESC");
+                $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                if (count($clients) > 0) {
+                    echo "<table id='clientsTable'>";
+                    echo "<tr><th>S. No</th><th>Logo</th><th>Name</th><th>Status</th><th>Date</th><th>Actions</th></tr>";
+                    
+                    foreach ($clients as $row) {
+                        echo "<tr class='client-row'>";
+                        echo "<td>" . $row['id'] . "</td>";
+                        echo "<td><img src='" . htmlspecialchars($row['logo_url']) . "' style='width: 60px; height: 60px; object-fit: contain; border-radius: 4px;'></td>";
+                        echo "<td class='client-name'>" . htmlspecialchars($row['name']) . "</td>";
+                        echo "<td><span style='padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; " . ($row['status'] === 'active' ? 'background: #d4edda; color: #155724;' : 'background: #f8d7da; color: #721c24;') . "'>" . ucfirst($row['status']) . "</span></td>";
+                        echo "<td>" . date('M j, Y', strtotime($row['created_at'])) . "</td>";
+                        echo "<td style='white-space: nowrap;'>";
+                        echo "<button onclick='editClient({$row['id']})' style='background: #007cba; color: white; border: none; padding: 6px 8px; border-radius: 4px; margin-right: 5px; cursor: pointer; font-size: 14px;' title='Edit'><i class='fas fa-edit'></i></button>";
+                        echo "<button onclick='if(confirm(\"Delete this client?\")) deleteClient({$row['id']})' style='background: #dc3545; color: white; border: none; padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 14px;' title='Delete'><i class='fas fa-trash'></i></button>";
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<p>No clients found.</p>";
+                }
+                
+                echo "<script>";
+                echo "function uploadClientLogo() {";
+                echo "  const file = document.getElementById('clientLogoFile').files[0];";
+                echo "  if (!file) return;";
+                echo "  const formData = new FormData();";
+                echo "  formData.append('image', file);";
+                echo "  fetch('http://localhost/api/upload-image.php', {";
+                echo "    method: 'POST',";
+                echo "    body: formData";
+                echo "  }).then(r => r.json()).then(data => {";
+                echo "    if (data.success) {";
+                echo "      document.getElementById('clientLogoUrl').value = data.url;";
+                echo "      document.getElementById('clientLogoPreview').innerHTML = '<img src=\"' + data.url + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\">';";
+                echo "    } else {";
+                echo "      alert('Upload failed: ' + data.error);";
+                echo "    }";
+                echo "  });";
+                echo "}";
+                echo "function showAddClient() {";
+                echo "  document.getElementById('clientFormTitle').textContent = 'Add New Client';";
+                echo "  document.getElementById('clientId').value = '';";
+                echo "  document.getElementById('clientName').value = '';";
+                echo "  document.getElementById('clientLogoUrl').value = '';";
+                echo "  document.getElementById('clientLogoFile').value = '';";
+                echo "  document.getElementById('clientLogoPreview').innerHTML = '';";
+                echo "  document.getElementById('clientStatus').value = 'active';";
+                echo "  document.getElementById('clientForm').style.display = 'block';";
+                echo "}";
+                echo "function editClient(id) {";
+                echo "  fetch('http://localhost/api/clients-api.php')";
+                echo "    .then(r => r.json())";
+                echo "    .then(data => {";
+                echo "      const client = data.find(c => c.id == id);";
+                echo "      if (client) {";
+                echo "        document.getElementById('clientFormTitle').textContent = 'Edit Client';";
+                echo "        document.getElementById('clientId').value = client.id;";
+                echo "        document.getElementById('clientName').value = client.name;";
+                echo "        document.getElementById('clientLogoUrl').value = client.logo_url;";
+                echo "        document.getElementById('clientLogoFile').value = '';";
+                echo "        document.getElementById('clientLogoPreview').innerHTML = '<img src=\"' + client.logo_url + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\">';";
+                echo "        document.getElementById('clientStatus').value = client.status;";
+                echo "        document.getElementById('clientForm').style.display = 'block';";
+                echo "      }";
+                echo "    });";
+                echo "}";
+                echo "function deleteClient(id) {";
+                echo "  fetch('http://localhost/api/clients-api.php?id=' + id, { method: 'DELETE' })";
+                echo "    .then(r => r.json())";
+                echo "    .then(data => {";
+                echo "      if (data.success) {";
+                echo "        location.reload();";
+                echo "      } else {";
+                echo "        alert('Error: Failed to delete client');";
+                echo "      }";
+                echo "    });";
+                echo "}";
+                echo "function saveClient(e) {";
+                echo "  e.preventDefault();";
+                echo "  const id = document.getElementById('clientId').value;";
+                echo "  const method = id ? 'PUT' : 'POST';";
+                echo "  fetch('http://localhost/api/clients-api.php', {";
+                echo "    method: method,";
+                echo "    headers: {'Content-Type': 'application/json'},";
+                echo "    body: JSON.stringify({";
+                echo "      id: id,";
+                echo "      name: document.getElementById('clientName').value,";
+                echo "      logo_url: document.getElementById('clientLogoUrl').value,";
+                echo "      status: document.getElementById('clientStatus').value";
+                echo "    })";
+                echo "  }).then(() => location.reload());";
+                echo "}";
+                echo "function cancelClient() {";
+                echo "  document.getElementById('clientForm').style.display = 'none';";
+                echo "}";
+                echo "function filterClients() {";
+                echo "  const searchTerm = document.getElementById('searchClients').value.toLowerCase();";
+                echo "  const rows = document.querySelectorAll('.client-row');";
+                echo "  rows.forEach(row => {";
+                echo "    const name = row.querySelector('.client-name').textContent.toLowerCase();";
+                echo "    if (name.includes(searchTerm)) {";
                 echo "      row.style.display = '';";
                 echo "    } else {";
                 echo "      row.style.display = 'none';";

@@ -17,7 +17,7 @@ const Navbar = () => {
             <img 
               src={logoImage} 
               alt="NSG Logo" 
-              className="w-24 h-24 object-contain transition-all duration-500 group-hover:scale-110"
+              className="w-32 h-32 object-contain transition-all duration-500 group-hover:scale-110"
             />
           </Link>
 

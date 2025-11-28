@@ -1,53 +1,63 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
+import { API_ENDPOINTS } from "@/config/api";
 import "../animations.css";
-import gallery1 from "@/assets/gallery-1.jpg";
-import gallery2 from "@/assets/gallery-2.jpg";
-import gallery3 from "@/assets/gallery-3.jpg";
-import gallery4 from "@/assets/gallery-4.jpg";
-import gallery5 from "@/assets/gallery-5.jpg";
-import gallery6 from "@/assets/gallery-6.jpg";
 
-const galleryItems = [
-  {
-    image: gallery1,
-    title: "Custom Team T-Shirts",
-    category: "T-Shirts",
-  },
-  {
-    image: gallery2,
-    title: "Professional Tracksuits",
-    category: "Tracksuits",
-  },
-  {
-    image: gallery3,
-    title: "Branded Hoodies",
-    category: "Hoodies",
-  },
-  {
-    image: gallery4,
-    title: "Team Jerseys",
-    category: "Sportswear",
-  },
-  {
-    image: gallery5,
-    title: "Athletic Wear Collection",
-    category: "Sportswear",
-  },
-  {
-    image: gallery6,
-    title: "Complete Team Uniforms",
-    category: "Sportswear",
-  },
-];
+// Add custom keyframes for special effects
+const customStyles = `
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+`;
+
+// Inject styles
+if (typeof document !== 'undefined') {
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = customStyles;
+  document.head.appendChild(styleSheet);
+}
+
+interface GalleryItem {
+  id: number;
+  title: string;
+  image_url: string;
+  category: string;
+  status: string;
+  created_at: string;
+}
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [filteredItems, setFilteredItems] = useState<GalleryItem[]>([]);
+  const [filters, setFilters] = useState<string[]>([]);
+  const [activeFilter, setActiveFilter] = useState<string>('all');
   const [heroRef, heroVisible] = useIntersectionObserver();
   const [galleryRef, galleryVisible] = useIntersectionObserver();
+
+  useEffect(() => {
+    Promise.all([
+      fetch(API_ENDPOINTS.GALLERY).then(r => r.json()),
+      fetch(API_ENDPOINTS.GALLERY_FILTERS).then(r => r.json())
+    ]).then(([galleryData, filtersData]) => {
+      setGalleryItems(galleryData);
+      setFilteredItems(galleryData);
+      setFilters(['all', ...filtersData.map((f: any) => f.name)]);
+    }).catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+  const filterItems = (category: string) => {
+    setActiveFilter(category);
+    if (category === 'all') {
+      setFilteredItems(galleryItems);
+    } else {
+      setFilteredItems(galleryItems.filter(item => item.category === category));
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -55,88 +65,56 @@ const Gallery = () => {
       
       {/* Hero Section */}
       <section ref={heroRef} className="pt-32 pb-20 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
-        {/* Enhanced Dynamic Background */}
+        {/* Enhanced Elegant Background */}
         <div className="absolute inset-0">
-          {/* Large Morphing Blobs */}
-          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-primary/15 to-accent/15 blur-3xl animate-morphing animate-drift" style={{ animationDuration: '20s' }}></div>
-          <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tl from-accent/12 to-primary/12 blur-3xl animate-float animate-glow" style={{ animationDuration: '15s' }}></div>
-          <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-gradient-to-r from-primary/10 to-accent/10 blur-2xl animate-morphing" style={{ animationDuration: '25s', animationDelay: '5s' }}></div>
+          {/* Dynamic Gradient Orbs */}
+          <div className="absolute top-20 left-20 w-80 h-80 bg-gradient-to-br from-primary/12 to-primary/6 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s' }}></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-tl from-primary/8 to-primary/4 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary/6 to-primary/3 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '10s', animationDelay: '3s' }}></div>
           
-          {/* Rotating Geometric Patterns */}
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute animate-kaleidoscope"
-              style={{
-                left: `${15 + (i * 8)}%`,
-                top: `${10 + (i % 4) * 20}%`,
-                width: `${40 + Math.random() * 60}px`,
-                height: `${40 + Math.random() * 60}px`,
-                background: `linear-gradient(${i * 30}deg, rgba(var(--primary-rgb), ${0.1 + Math.random() * 0.1}), rgba(var(--accent-rgb), ${0.05 + Math.random() * 0.1}))`,
-                animationDelay: `${i * 0.8}s`,
-                animationDuration: `${10 + i * 2}s`,
-                clipPath: i % 3 === 0 ? 'polygon(50% 0%, 0% 100%, 100% 100%)' : i % 3 === 1 ? 'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)' : 'circle(50%)'
-              }}
-            />
-          ))}
-          
-          {/* Multiple Ripple Layers */}
-          {[...Array(5)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute border border-primary/20 rounded-full animate-ripple"
-              style={{
-                left: `${20 + i * 15}%`,
-                top: `${25 + i * 10}%`,
-                width: `${100 + i * 50}px`,
-                height: `${100 + i * 50}px`,
-                animationDelay: `${i * 1.5}s`,
-                animationDuration: `${4 + i}s`
-              }}
-            />
-          ))}
-          
-          {/* Orbiting Particle Systems */}
-          {[...Array(3)].map((_, systemIndex) => (
-            <div
-              key={systemIndex}
-              className="absolute"
-              style={{
-                left: `${30 + systemIndex * 25}%`,
-                top: `${20 + systemIndex * 30}%`,
-                width: '120px',
-                height: '120px'
-              }}
-            >
-              {[...Array(6)].map((_, particleIndex) => (
-                <div
-                  key={particleIndex}
-                  className="absolute w-3 h-3 bg-gradient-to-r from-primary/40 to-accent/40 rounded-full animate-orbit"
-                  style={{
-                    animationDelay: `${particleIndex * 0.5 + systemIndex}s`,
-                    animationDuration: `${6 + systemIndex * 2}s`,
-                    transformOrigin: '60px 60px'
-                  }}
-                />
-              ))}
-            </div>
-          ))}
-          
-          {/* Flowing Energy Streams */}
+          {/* Floating Geometric Elements */}
           {[...Array(8)].map((_, i) => (
             <div
               key={i}
-              className="absolute h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent animate-slide"
+              className="absolute opacity-15 animate-float"
               style={{
-                width: '400%',
-                top: `${5 + i * 12}%`,
-                left: '-150%',
-                animationDelay: `${i * 0.7}s`,
-                animationDuration: `${5 + Math.random() * 3}s`,
-                transform: `rotate(${-20 + i * 5}deg)`
+                left: `${15 + i * 12}%`,
+                top: `${10 + (i % 3) * 30}%`,
+                width: `${40 + i * 15}px`,
+                height: `${40 + i * 15}px`,
+                background: `linear-gradient(${i * 45}deg, hsl(var(--primary)) / 0.15, hsl(var(--primary)) / 0.08)`,
+                borderRadius: i % 3 === 0 ? '50%' : i % 3 === 1 ? '20%' : '0%',
+                animationDelay: `${i * 1.5}s`,
+                animationDuration: `${12 + i * 2}s`,
+                transform: `rotate(${i * 30}deg)`
               }}
             />
           ))}
+          
+          {/* Animated Light Rays */}
+          {[...Array(4)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute opacity-10"
+              style={{
+                left: `${20 + i * 20}%`,
+                top: '-10%',
+                width: '2px',
+                height: '120%',
+                background: `linear-gradient(to bottom, transparent, hsl(var(--primary)) / 0.3, transparent)`,
+                animationDelay: `${i * 2}s`,
+                animationDuration: '8s',
+                animation: 'fadeInOut 8s ease-in-out infinite',
+                transform: `rotate(${10 + i * 5}deg)`
+              }}
+            />
+          ))}
+          
+          {/* Enhanced Grid Pattern */}
+          <div className="absolute inset-0 opacity-8" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary)) / 0.3 1px, transparent 0)`,
+            backgroundSize: '80px 80px'
+          }}></div>
         </div>
         
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
@@ -157,110 +135,86 @@ const Gallery = () => {
 
       {/* Gallery Grid */}
       <section ref={galleryRef} className="py-20 relative overflow-hidden">
-        {/* Complex Gallery Background System */}
+        {/* Enhanced Gallery Background */}
         <div className="absolute inset-0">
-          {/* Massive Gradient Orbs */}
-          <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl animate-morphing animate-drift" style={{ animationDuration: '30s' }}></div>
-          <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-gradient-to-tl from-accent/15 to-primary/15 blur-3xl animate-float animate-glow" style={{ animationDuration: '25s' }}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-r from-primary/12 to-accent/12 blur-2xl animate-morphing" style={{ animationDuration: '35s' }}></div>
+          {/* Dynamic Gradient Overlays */}
+          <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-primary/5 to-transparent animate-pulse" style={{ animationDuration: '4s' }}></div>
+          <div className="absolute bottom-0 right-0 w-full h-40 bg-gradient-to-t from-primary/5 to-transparent animate-pulse" style={{ animationDuration: '6s', animationDelay: '1s' }}></div>
           
-          {/* Dynamic Geometric Grid */}
-          {[...Array(20)].map((_, i) => (
+          {/* Enhanced Floating Elements */}
+          {[...Array(6)].map((_, i) => (
             <div
               key={i}
-              className="absolute animate-float"
+              className="absolute opacity-12 animate-float"
               style={{
-                left: `${(i % 5) * 20 + 5}%`,
-                top: `${Math.floor(i / 5) * 25 + 10}%`,
-                width: `${30 + Math.random() * 40}px`,
-                height: `${30 + Math.random() * 40}px`,
-                background: `linear-gradient(${i * 18}deg, rgba(var(--primary-rgb), ${0.08 + Math.random() * 0.1}), rgba(var(--accent-rgb), ${0.05 + Math.random() * 0.08}))`,
-                animationDelay: `${i * 0.3}s`,
-                animationDuration: `${8 + Math.random() * 6}s`,
-                clipPath: i % 4 === 0 ? 'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)' : 
-                          i % 4 === 1 ? 'polygon(50% 0%, 0% 100%, 100% 100%)' : 
-                          i % 4 === 2 ? 'circle(50%)' : 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
-                transform: `rotate(${i * 15}deg)`
+                left: `${20 + i * 15}%`,
+                top: `${15 + i * 12}%`,
+                width: `${60 + i * 30}px`,
+                height: `${60 + i * 30}px`,
+                background: `radial-gradient(circle, hsl(var(--primary)) / 0.25, hsl(var(--primary)) / 0.1 50%, transparent 80%)`,
+                borderRadius: i % 2 === 0 ? '50%' : '30%',
+                animationDelay: `${i * 2.5}s`,
+                animationDuration: `${18 + i * 4}s`,
+                filter: 'blur(1px)'
               }}
             />
           ))}
           
-          {/* Multi-Layer Ripple System */}
-          {[...Array(8)].map((_, i) => (
+          {/* Subtle Connecting Lines */}
+          {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className="absolute border border-primary/15 rounded-full animate-ripple"
+              className="absolute opacity-8"
               style={{
-                left: `${10 + (i % 3) * 30}%`,
-                top: `${15 + Math.floor(i / 3) * 25}%`,
-                width: `${80 + i * 30}px`,
-                height: `${80 + i * 30}px`,
-                animationDelay: `${i * 0.8}s`,
-                animationDuration: `${3 + i * 0.5}s`
+                left: `${30 + i * 20}%`,
+                top: `${25 + i * 20}%`,
+                width: '200px',
+                height: '1px',
+                background: `linear-gradient(to right, transparent, hsl(var(--primary)) / 0.4, transparent)`,
+                animationDelay: `${i * 3}s`,
+                animationDuration: '10s',
+                animation: 'fadeInOut 10s ease-in-out infinite',
+                transform: `rotate(${i * 45}deg)`
               }}
             />
           ))}
           
-          {/* Complex Orbital Systems */}
-          {[...Array(4)].map((_, systemIndex) => (
-            <div
-              key={systemIndex}
-              className="absolute"
-              style={{
-                left: `${20 + systemIndex * 20}%`,
-                top: `${25 + systemIndex * 15}%`,
-                width: '160px',
-                height: '160px'
-              }}
-            >
-              {[...Array(8)].map((_, particleIndex) => (
-                <div
-                  key={particleIndex}
-                  className="absolute w-2 h-2 bg-gradient-to-r from-primary/50 to-accent/50 rounded-full animate-orbit"
-                  style={{
-                    animationDelay: `${particleIndex * 0.3 + systemIndex * 2}s`,
-                    animationDuration: `${8 + systemIndex * 3}s`,
-                    transformOrigin: '80px 80px'
-                  }}
-                />
-              ))}
-            </div>
-          ))}
-          
-          {/* Cascading Wave Patterns */}
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute h-px bg-gradient-to-r from-transparent via-primary/25 to-transparent animate-wave"
-              style={{
-                width: '500%',
-                top: `${i * 8}%`,
-                left: '-200%',
-                animationDelay: `${i * 0.4}s`,
-                animationDuration: `${6 + Math.random() * 4}s`,
-                transform: `rotate(${-25 + i * 4}deg)`
-              }}
-            />
-          ))}
-          
-          {/* Floating Particle Cloud */}
-          {[...Array(25)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-primary/30 rounded-full animate-drift"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.2}s`,
-                animationDuration: `${10 + Math.random() * 8}s`
-              }}
-            />
-          ))}
+          {/* Premium Grid Overlay */}
+          <div className="absolute inset-0 opacity-6" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, hsl(var(--primary)) / 0.4 1px, transparent 0)`,
+            backgroundSize: '60px 60px'
+          }}></div>
         </div>
         
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {filters.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => filterItems(filter)}
+                className={`relative px-8 py-3 rounded-full font-semibold transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 ${
+                  activeFilter === filter
+                    ? 'bg-primary text-primary-foreground shadow-xl shadow-primary/25 scale-105'
+                    : 'bg-secondary/80 text-secondary-foreground hover:bg-primary hover:text-primary-foreground hover:shadow-xl hover:shadow-primary/20 border border-border/30 hover:border-primary/50'
+                } group overflow-hidden`}
+              >
+                {/* Animated background glow */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse"></div>
+                
+                {/* Button text */}
+                <span className="relative z-10">
+                  {filter === 'all' ? 'All' : filter}
+                </span>
+                
+                {/* Hover ripple effect */}
+                <div className="absolute inset-0 rounded-full bg-primary/10 scale-0 group-hover:scale-100 transition-transform duration-700 ease-out"></div>
+              </button>
+            ))}
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {galleryItems.map((item, index) => (
+            {filteredItems.map((item, index) => (
               <div
                 key={index}
                 className={`group relative overflow-hidden rounded-lg cursor-pointer aspect-square border border-border/50 hover:border-primary/30 transition-all duration-700 hover:shadow-[var(--shadow-lg)] ${
@@ -270,7 +224,7 @@ const Gallery = () => {
                 onClick={() => setSelectedImage(index)}
               >
                 <img
-                  src={item.image}
+                  src={item.image_url}
                   alt={item.title}
                   className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:rotate-1"
                 />
@@ -302,7 +256,7 @@ const Gallery = () => {
             <X size={24} />
           </button>
           <img
-            src={galleryItems[selectedImage].image}
+            src={galleryItems[selectedImage].image_url}
             alt={galleryItems[selectedImage].title}
             className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-[var(--shadow-lg)]"
           />

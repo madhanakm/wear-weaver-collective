@@ -20,10 +20,10 @@ const Hero = () => {
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="max-w-3xl">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent animate-in fade-in slide-in-from-bottom-4 duration-1000">
-            Premium Custom Sportswear Manufacturing
+            Quality Garment Manufacturing
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
-            Transform your brand with high-quality customized t-shirts, tracksuits, hoodies, and sportswear. From concept to delivery, we bring your vision to life.
+            High-quality garments for men, women, and children. From corporate t-shirts to school uniforms, hoodies to sports t-shirts - we deliver comfort, durability, and style.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
             <Link to="/get-quote">
@@ -32,9 +32,11 @@ const Hero = () => {
                 <ArrowRight className="ml-2" />
               </Button>
             </Link>
-            <Button size="lg" variant="secondary" className="text-lg">
-              View Products
-            </Button>
+            <Link to="/products">
+              <Button size="lg" variant="secondary" className="text-lg">
+                View Products
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

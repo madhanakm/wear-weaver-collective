@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Mail, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 const CTA = () => {
@@ -26,14 +27,18 @@ const CTA = () => {
           <div className={`flex flex-col sm:flex-row gap-6 justify-center items-center transition-all duration-700 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`} style={{ transitionDelay: '400ms' }}>
-            <Button size="lg" variant="hero" className="text-lg">
-              <Mail className="mr-2" />
-              Get a Quote
-            </Button>
-            <Button size="lg" variant="secondary" className="text-lg">
-              <Phone className="mr-2" />
-              Call Us Now
-            </Button>
+            <Link to="/get-quote">
+              <Button size="lg" variant="hero" className="text-lg">
+                <Mail className="mr-2" />
+                Get a Quote
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button size="lg" variant="secondary" className="text-lg">
+                <Phone className="mr-2" />
+                Call Us Now
+              </Button>
+            </Link>
           </div>
 
           <div className={`mt-12 pt-12 border-t border-border transition-all duration-700 ${
@@ -42,11 +47,11 @@ const CTA = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
               <div>
                 <h3 className="font-semibold mb-2 text-primary">Email</h3>
-                <p className="text-muted-foreground">info@yoursportswear.com</p>
+                <p className="text-muted-foreground">nisanthapparelsnsg@gmail.com</p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2 text-primary">Phone</h3>
-                <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                <p className="text-muted-foreground">+91 9876543210</p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2 text-primary">Hours</h3>

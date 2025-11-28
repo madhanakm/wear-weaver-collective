@@ -10,7 +10,7 @@ const stats = [
     label: "Happy Clients",
   },
   {
-    number: "15+",
+    number: "5+",
     label: "Years Experience",
   },
   {

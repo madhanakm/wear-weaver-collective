@@ -54,12 +54,12 @@ const About = () => {
             <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent transition-all duration-1000 ${
               heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}>
-              About Nisanth Sports Garments
+              About Nisanth Apparels
             </h1>
             <p className={`text-xl text-muted-foreground transition-all duration-1000 ${
               heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`} style={{ transitionDelay: '300ms' }}>
-              Leading the way in custom sportswear manufacturing with over 15 years of excellence
+              A reputed manufacturer dedicated to producing high-quality garments for men, women, and children
             </p>
           </div>
         </div>
@@ -82,16 +82,16 @@ const About = () => {
             <p className={`text-lg text-muted-foreground mb-4 transition-all duration-700 ${
               storyVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`} style={{ transitionDelay: '200ms' }}>
-              Founded in 2010, Nisanth Sports Garments has grown from a small local workshop to an international 
-              custom sportswear manufacturer serving teams, brands, and organizations worldwide. Our 
-              passion for quality and innovation drives everything we do.
+              Nisanth Apparels is a reputed manufacturer dedicated to producing high-quality garments for men, women, and children. 
+              Our wide product range includes Cotton Men T-Shirts, Men Corporate T-Shirts, School T-Shirts, Girls and Boys School Uniforms, 
+              Kids School Uniforms, Cotton Hoodies, Men Collar T-Shirts, and Men Sports T-Shirts.
             </p>
             <p className={`text-lg text-muted-foreground transition-all duration-700 ${
               storyVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`} style={{ transitionDelay: '400ms' }}>
-              We combine traditional craftsmanship with cutting-edge technology to deliver sportswear 
-              that not only looks exceptional but performs under the most demanding conditions. Every 
-              piece we create reflects our commitment to excellence.
+              With a focus on comfort, durability, and style, we use premium fabrics and advanced stitching techniques to deliver 
+              apparel that meets the expectations of institutions, corporates, and individuals alike. At Nisanth Apparels, we are 
+              committed to combining quality manufacturing with timely delivery and customized solutions to ensure complete customer satisfaction.
             </p>
           </div>
         </div>
@@ -145,9 +145,9 @@ const About = () => {
                   <CheckCircle2 className="w-12 h-12 text-primary mb-4 animate-glow" style={{ animationDelay: `${index * 0.5}s` }} />
                   <h3 className="text-xl font-semibold mb-3">{title}</h3>
                   <p className="text-muted-foreground">
-                    {index === 0 && "We never compromise on quality. Every product undergoes rigorous testing to ensure it meets our high standards."}
-                    {index === 1 && "We stay ahead of trends and technology, continuously improving our processes and products to deliver the best."}
-                    {index === 2 && "Your satisfaction is our priority. We work closely with you to bring your vision to life with personalized service."}
+                    {index === 0 && "We use premium fabrics and advanced stitching techniques to deliver apparel that meets the highest standards of quality and durability."}
+                    {index === 1 && "We continuously improve our manufacturing processes to deliver innovative solutions for institutions, corporates, and individuals."}
+                    {index === 2 && "Complete customer satisfaction is our priority. We provide customized solutions with timely delivery for all your garment needs."}
                   </p>
                 </CardContent>
               </Card>
@@ -172,10 +172,10 @@ const About = () => {
             }`}>Why Choose Us</h2>
             <div className="space-y-6">
               {[
-                { title: 'Premium Materials', desc: 'We source only the finest fabrics and materials to ensure durability, comfort, and performance.' },
-                { title: 'Custom Design Support', desc: 'Our expert design team works with you to create unique, eye-catching sportswear that represents your brand.' },
-                { title: 'Fast Turnaround', desc: 'We understand deadlines matter. Our efficient processes ensure quick delivery without sacrificing quality.' },
-                { title: 'Global Reach', desc: 'With partners worldwide, we can deliver your custom sportswear anywhere you need it.' }
+                { title: 'Extensive Product Range', desc: 'We offer a wide variety of garments including corporate wear, school uniforms, casuals, and sportswear to meet diverse client needs.' },
+                { title: 'Premium Fabric Quality', desc: 'All our products are made using high-grade cotton and durable materials ensuring comfort, longevity, and style.' },
+                { title: 'Customization Options', desc: 'We provide tailored designs, sizes, and branding options to match institutional, corporate, and individual preferences.' },
+                { title: 'Reliable Manufacturing & Delivery', desc: 'Backed by efficient production facilities and a skilled team, we ensure consistent quality and on-time delivery for every order.' }
               ].map((item, index) => (
                 <div key={index} className={`flex items-start gap-4 p-4 rounded-lg hover:bg-muted/30 transition-all duration-700 ${
                   whyVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'

@@ -2,36 +2,31 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
-import tshirtImage from "@/assets/tshirt.jpg";
-import tracksuitImage from "@/assets/tracksuit.jpg";
-import hoodieImage from "@/assets/hoodie.jpg";
-import sportswearImage from "@/assets/sportswear.jpg";
+import { useState, useEffect } from "react";
+import { API_ENDPOINTS } from "@/config/api";
 
-const products = [
-  {
-    name: "Custom T-Shirts",
-    description: "Premium quality fabric with unlimited customization options",
-    image: tshirtImage,
-  },
-  {
-    name: "Sports Tracksuits",
-    description: "Performance-driven designs for teams and individuals",
-    image: tracksuitImage,
-  },
-  {
-    name: "Athletic Hoodies",
-    description: "Comfortable and stylish for any activity",
-    image: hoodieImage,
-  },
-  {
-    name: "Team Sportswear",
-    description: "Professional-grade uniforms and athletic apparel",
-    image: sportswearImage,
-  },
-];
+interface Product {
+  id: string;
+  name: string;
+  description: string;
+  image_url: string;
+}
+
+const products: Product[] = [];
 
 const Products = () => {
   const [ref, isVisible] = useIntersectionObserver();
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetch(API_ENDPOINTS.PRODUCTS)
+      .then(res => res.json())
+      .then(data => {
+        console.log('Products data:', data);
+        setProducts(data.slice(0, 4));
+      })
+      .catch(err => console.error('Error fetching products:', err));
+  }, []);
 
   return (
     <section ref={ref} className="py-20 bg-muted/30">
@@ -59,7 +54,7 @@ const Products = () => {
               <CardContent className="p-0">
                 <div className="relative overflow-hidden aspect-square">
                   <img
-                    src={product.image}
+                    src={product.image_url || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop&crop=center'}
                     alt={product.name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
