@@ -75,6 +75,37 @@ try {
     )";
     $pdo->exec($sql);
     
+    // Create gallery_filters table
+    $sql = "CREATE TABLE IF NOT EXISTS gallery_filters (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        status ENUM('active', 'inactive') DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )";
+    $pdo->exec($sql);
+    
+    // Create products table
+    $sql = "CREATE TABLE IF NOT EXISTS products (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(200) NOT NULL,
+        description TEXT,
+        image_url VARCHAR(500) NOT NULL,
+        status ENUM('active', 'inactive') DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )";
+    $pdo->exec($sql);
+    
+    // Create product_gallery table
+    $sql = "CREATE TABLE IF NOT EXISTS product_gallery (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        product_id INT NOT NULL,
+        image_url VARCHAR(500) NOT NULL,
+        title VARCHAR(200),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+    )";
+    $pdo->exec($sql);
+    
     // Create clients table
     $sql = "CREATE TABLE IF NOT EXISTS clients (
         id INT AUTO_INCREMENT PRIMARY KEY,

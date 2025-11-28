@@ -42,7 +42,7 @@ $filename = uniqid() . '.' . $extension;
 $filepath = $uploadDir . $filename;
 
 if (move_uploaded_file($file['tmp_name'], $filepath)) {
-    $url = 'https://ai.thinkaside.com/uploads/' . $filename;
+    $url = 'http://localhost/api/uploads/' . $filename;
     echo json_encode(['success' => true, 'url' => $url]);
 } else {
     echo json_encode(['error' => 'Upload failed']);
