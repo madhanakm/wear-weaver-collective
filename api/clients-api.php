@@ -10,12 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require_once 'config/database.php';
 
+$path = $_GET['path'] ?? '';
 $method = $_SERVER['REQUEST_METHOD'];
 
 try {
     $pdo = getDbConnection();
     
-    if ($method === 'GET') {
+    if ($path === 'public' && $method === 'GET') {
         $stmt = $pdo->query("SELECT * FROM clients WHERE status = 'active' ORDER BY created_at DESC");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         

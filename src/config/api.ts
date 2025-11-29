@@ -11,7 +11,7 @@ export const API_ENDPOINTS = {
   GALLERY_FILTERS: `${API_BASE_URL}/product-filters-api.php?path=public`,
   PRODUCTS: `${API_BASE_URL}/products-api.php?path=public`,
   PRODUCT_GALLERY: (id: string) => `${API_BASE_URL}/products-api.php?path=gallery/${id}`,
-  CLIENTS: `${API_BASE_URL}/clients-api.php`,
+  CLIENTS: `${API_BASE_URL}/clients-api.php?path=public`,
   SLIDERS: `${API_BASE_URL}/sliders-api.php?path=public`,
 };
 
