@@ -44,7 +44,7 @@ $filepath = $uploadDir . $filename;
 
 if (move_uploaded_file($file['tmp_name'], $filepath)) {
     chmod($filepath, 0644);
-    $url = '/api/uploads/' . $filename;
+    $url = 'https://ai.thinkaside.com/api/uploads/' . $filename;
     echo json_encode(['success' => true, 'url' => $url]);
 } else {
     $error = error_get_last();
