@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://ai.thinkaside.com/api';
+export const API_BASE_URL = 'https://ai.thinkaside.com';
 
 export const API_ENDPOINTS = {
   BASE_URL: API_BASE_URL,
