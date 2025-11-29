@@ -17,11 +17,13 @@ const contactInfo = [
     icon: Mail,
     title: "Email",
     content: "nisanthapparelsnsg@gmail.com",
+    link: "mailto:nisanthapparelsnsg@gmail.com",
   },
   {
     icon: Phone,
     title: "Phone",
-    content: "+91 9876543210",
+    content: "+91 80569 99316, +91 99629 99316",
+    link: "tel:+918056999316",
   },
   {
     icon: MapPin,
@@ -198,7 +200,11 @@ const Contact = () => {
                       <Icon size={24} />
                     </div>
                     <h3 className="font-semibold mb-2">{info.title}</h3>
-                    <p className="text-muted-foreground text-sm">{info.content}</p>
+                    {info.link ? (
+                      <a href={info.link} className="text-muted-foreground text-sm hover:text-primary transition-colors">{info.content}</a>
+                    ) : (
+                      <p className="text-muted-foreground text-sm">{info.content}</p>
+                    )}
                   </CardContent>
                 </Card>
               );

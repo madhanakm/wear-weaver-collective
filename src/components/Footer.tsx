@@ -101,7 +101,10 @@ const Footer = () => {
                   <Phone className="w-5 h-5 text-primary flex-shrink-0" />
                 </div>
                 <div>
-                  <p className="font-semibold text-secondary-foreground">+91 9876543210</p>
+                  <div>
+                    <a href="tel:+918056999316" className="font-semibold text-secondary-foreground hover:text-primary transition-colors block">+91 80569 99316</a>
+                    <a href="tel:+919962999316" className="font-semibold text-secondary-foreground hover:text-primary transition-colors block">+91 99629 99316</a>
+                  </div>
                   <p className="text-sm text-secondary-foreground/60">Mon-Sat, 9am-6pm</p>
                 </div>
               </li>
@@ -110,7 +113,7 @@ const Footer = () => {
                   <Mail className="w-5 h-5 text-primary flex-shrink-0" />
                 </div>
                 <div className="flex items-center">
-                  <p className="font-semibold text-secondary-foreground break-all">nisanthapparelsnsg@gmail.com</p>
+                  <a href="mailto:nisanthapparelsnsg@gmail.com" className="font-semibold text-secondary-foreground break-all hover:text-primary transition-colors">nisanthapparelsnsg@gmail.com</a>
                 </div>
               </li>
               <li className="flex items-start gap-3 text-secondary-foreground/70 group hover:text-secondary-foreground transition-colors">

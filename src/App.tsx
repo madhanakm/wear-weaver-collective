@@ -6,6 +6,7 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ScrollToTop from "@/components/ScrollToTop";
 import Preloader from "@/components/Preloader";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 import Index from "./pages/Index";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
@@ -41,6 +42,7 @@ const App = () => {
       <Sonner />
       <HashRouter>
         <ScrollToTop />
+        <WhatsAppFloat />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/gallery" element={<Gallery />} />
