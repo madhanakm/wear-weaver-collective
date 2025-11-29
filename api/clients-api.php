@@ -1,9 +1,4 @@
 <?php
-error_reporting(0);
-ini_set('display_errors', 0);
-
-require_once 'config/database.php';
-
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -13,43 +8,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
-$conn = getDbConnection();
-$path = $_GET['path'] ?? '';
+require_once 'config/database.php';
 
-switch ($_SERVER['REQUEST_METHOD']) {
-    case 'GET':
-        if ($path === 'public') {
-            $stmt = $conn->prepare("SELECT * FROM clients WHERE status = 'active' ORDER BY created_at DESC");
-            $stmt->execute();
-            $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo json_encode($clients);
-        } else {
-            $stmt = $conn->prepare("SELECT * FROM clients ORDER BY created_at DESC");
-            $stmt->execute();
-            $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo json_encode($clients);
-        }
-        break;
+$method = $_SERVER['REQUEST_METHOD'];
 
-    case 'POST':
+try {
+    $pdo = getDbConnection();
+    
+    if ($method === 'GET') {
+        $stmt = $pdo->query("SELECT * FROM clients WHERE status = 'active' ORDER BY created_at DESC");
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        
+    } elseif ($method === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $conn->prepare("INSERT INTO clients (name, logo_url, status) VALUES (?, ?, ?)");
-        $result = $stmt->execute([$data['name'], $data['logo_url'], $data['status'] ?? 'active']);
-        echo json_encode(['success' => $result]);
-        break;
-
-    case 'PUT':
+        $stmt = $pdo->prepare("INSERT INTO clients (name, logo_url, status) VALUES (?, ?, ?)");
+        $stmt->execute([$data['name'], $data['logo_url'], $data['status'] ?? 'active']);
+        echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+        
+    } elseif ($method === 'PUT') {
         $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $conn->prepare("UPDATE clients SET name = ?, logo_url = ?, status = ? WHERE id = ?");
-        $result = $stmt->execute([$data['name'], $data['logo_url'], $data['status'], $data['id']]);
-        echo json_encode(['success' => $result]);
-        break;
-
-    case 'DELETE':
+        $stmt = $pdo->prepare("UPDATE clients SET name = ?, logo_url = ?, status = ? WHERE id = ?");
+        $stmt->execute([$data['name'], $data['logo_url'], $data['status'], $data['id']]);
+        echo json_encode(['success' => true]);
+        
+    } elseif ($method === 'DELETE') {
         $id = $_GET['id'];
-        $stmt = $conn->prepare("DELETE FROM clients WHERE id = ?");
-        $result = $stmt->execute([$id]);
-        echo json_encode(['success' => $result]);
-        break;
+        $stmt = $pdo->prepare("DELETE FROM clients WHERE id = ?");
+        $stmt->execute([$id]);
+        echo json_encode(['success' => true]);
+    }
+    
+} catch(Exception $e) {
+    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
 }
 ?>

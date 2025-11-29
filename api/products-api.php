@@ -1,7 +1,4 @@
 <?php
-error_reporting(0);
-ini_set('display_errors', 0);
-
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -19,18 +16,12 @@ $method = $_SERVER['REQUEST_METHOD'];
 try {
     $pdo = getDbConnection();
     
-    if ($path === 'admin' && $method === 'GET') {
-        $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC");
-        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
-        
-    } elseif ($path === 'public' && $method === 'GET') {
+    if ($path === 'public' && $method === 'GET') {
         $stmt = $pdo->query("SELECT * FROM products WHERE status = 'active' ORDER BY created_at DESC");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         
-    } elseif (strpos($path, 'gallery/') === 0 && $method === 'GET') {
-        $productId = substr($path, 8);
-        $stmt = $pdo->prepare("SELECT * FROM product_gallery WHERE product_id = ? ORDER BY created_at DESC");
-        $stmt->execute([$productId]);
+    } elseif ($path === 'admin' && $method === 'GET') {
+        $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         
     } elseif ($path === 'create' && $method === 'POST') {
@@ -51,25 +42,9 @@ try {
         $stmt = $pdo->prepare("DELETE FROM products WHERE id = ?");
         $stmt->execute([$id]);
         echo json_encode(['success' => true]);
-        
-    } elseif (strpos($path, 'add-gallery/') === 0 && $method === 'POST') {
-        $productId = substr($path, 12);
-        $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $pdo->prepare("INSERT INTO product_gallery (product_id, image_url, title) VALUES (?, ?, ?)");
-        $stmt->execute([$productId, $data['image_url'], $data['title']]);
-        echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
-        
-    } elseif (strpos($path, 'delete-gallery/') === 0 && $method === 'DELETE') {
-        $id = substr($path, 15);
-        $stmt = $pdo->prepare("DELETE FROM product_gallery WHERE id = ?");
-        $stmt->execute([$id]);
-        echo json_encode(['success' => true]);
-        
-    } else {
-        echo json_encode(['error' => 'Invalid endpoint']);
     }
     
 } catch(Exception $e) {
-    echo json_encode(['error' => 'Database connection failed']);
+    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
 }
 ?>
