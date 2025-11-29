@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://localhost/api';
+export const API_BASE_URL = 'https://ai.thinkaside.com/api';
 
 export const API_ENDPOINTS = {
   BASE_URL: API_BASE_URL,
@@ -19,7 +19,7 @@ export const API_ENDPOINTS = {
 export const getImageUrl = (url: string): string => {
   if (!url) return '';
   if (url.startsWith('http')) return url;
-  return url.startsWith('/') ? `${API_BASE_URL}${url}` : url;
+  return url.startsWith('/') ? `https://ai.thinkaside.com${url}` : url;
 };
 
 // Utility function to process API response data with image URLs
