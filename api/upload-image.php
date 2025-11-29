@@ -14,10 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
-if (!file_exists($uploadDir)) {
-    $uploadDir = __DIR__ . '/uploads/';
-}
+$uploadDir = __DIR__ . '/uploads/';
 if (!file_exists($uploadDir)) {
     mkdir($uploadDir, 0755, true);
     chmod($uploadDir, 0755);
@@ -47,7 +44,7 @@ $filepath = $uploadDir . $filename;
 
 if (move_uploaded_file($file['tmp_name'], $filepath)) {
     chmod($filepath, 0644);
-    $url = '/uploads/' . $filename;
+    $url = '/api/uploads/' . $filename;
     echo json_encode(['success' => true, 'url' => $url]);
 } else {
     $error = error_get_last();
