@@ -22,7 +22,6 @@ const Products = () => {
     fetch(API_ENDPOINTS.PRODUCTS)
       .then(res => res.json())
       .then(data => {
-        console.log('Products data:', data);
         const processedData = processImageUrls(data);
         setProducts(processedData.slice(0, 4));
       })

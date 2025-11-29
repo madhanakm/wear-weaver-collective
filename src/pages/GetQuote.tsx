@@ -49,7 +49,6 @@ const GetQuote = () => {
       });
       
       const responseText = await response.text();
-      console.log('Raw response:', responseText);
       
       let result;
       try {

@@ -40,38 +40,15 @@ const Gallery = () => {
   const [galleryRef, galleryVisible] = useIntersectionObserver();
 
   useEffect(() => {
-    console.log('Gallery API URL:', API_ENDPOINTS.GALLERY);
-    console.log('Filters API URL:', API_ENDPOINTS.GALLERY_FILTERS);
-    
     Promise.all([
-      fetch(API_ENDPOINTS.GALLERY).then(r => {
-        console.log('Gallery response status:', r.status);
-        return r.text();
-      }).then(text => {
-        console.log('Gallery raw response:', text);
-        return JSON.parse(text);
-      }),
-      fetch(API_ENDPOINTS.GALLERY_FILTERS).then(r => {
-        console.log('Filters response status:', r.status);
-        return r.text();
-      }).then(text => {
-        console.log('Filters raw response:', text);
-        return JSON.parse(text);
-      })
+      fetch(API_ENDPOINTS.GALLERY).then(r => r.json()),
+      fetch(API_ENDPOINTS.GALLERY_FILTERS).then(r => r.json())
     ]).then(([galleryData, filtersData]) => {
-      console.log('Gallery data:', galleryData);
-      console.log('Filters data:', filtersData);
-      
       const processedGalleryData = processImageUrls(galleryData);
-      
-      console.log('Processed gallery data:', processedGalleryData);
       setGalleryItems(processedGalleryData);
       setFilteredItems(processedGalleryData);
       setFilters(['all', ...filtersData.map((f: any) => f.name)]);
-    }).catch(error => {
-      console.error('Error fetching data:', error);
-      console.error('Error details:', error.message);
-    });
+    }).catch(error => console.error('Error fetching data:', error));
   }, []);
 
   const filterItems = (category: string) => {
