@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://ai.thinkaside.com';
+export const API_BASE_URL = 'http://localhost/api';
 
 export const API_ENDPOINTS = {
   BASE_URL: API_BASE_URL,
@@ -12,11 +12,13 @@ export const API_ENDPOINTS = {
   PRODUCTS: `${API_BASE_URL}/products-api.php?path=public`,
   PRODUCT_GALLERY: (id: string) => `${API_BASE_URL}/products-api.php?path=gallery/${id}`,
   CLIENTS: `${API_BASE_URL}/clients-api.php`,
+  SLIDERS: `${API_BASE_URL}/sliders-api.php?path=public`,
 };
 
 // Utility function to convert relative image URLs to absolute URLs
 export const getImageUrl = (url: string): string => {
   if (!url) return '';
+  if (url.startsWith('http')) return url;
   return url.startsWith('/') ? `${API_BASE_URL}${url}` : url;
 };
 

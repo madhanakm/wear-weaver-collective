@@ -116,6 +116,40 @@ try {
     )";
     $pdo->exec($sql);
     
+    // Create sliders table
+    $sql = "CREATE TABLE IF NOT EXISTS sliders (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        image_url TEXT,
+        button_text VARCHAR(100),
+        button_link VARCHAR(255),
+        button_text_2 VARCHAR(100),
+        button_link_2 VARCHAR(255),
+        sort_order INT DEFAULT 0,
+        status ENUM('active', 'inactive') DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )";
+    $pdo->exec($sql);
+    
+    // Add second button fields to existing sliders table
+    $pdo->exec("ALTER TABLE sliders ADD COLUMN IF NOT EXISTS button_text_2 VARCHAR(100)");
+    $pdo->exec("ALTER TABLE sliders ADD COLUMN IF NOT EXISTS button_link_2 VARCHAR(255)");
+    
+    // Create blog_posts table
+    $sql = "CREATE TABLE IF NOT EXISTS blog_posts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        slug VARCHAR(255) UNIQUE NOT NULL,
+        content LONGTEXT NOT NULL,
+        excerpt TEXT,
+        featured_image VARCHAR(500),
+        status ENUM('draft', 'published') DEFAULT 'draft',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    )";
+    $pdo->exec($sql);
+    
     echo json_encode(['success' => true, 'message' => 'Database setup completed with all tables!']);
     
 } catch(PDOException $e) {

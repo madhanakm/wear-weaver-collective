@@ -156,6 +156,9 @@ $page = $_GET['page'] ?? 'contacts';
             <a href="?page=clients" <?php echo $page === 'clients' ? 'class="active"' : ''; ?>>
                 <i class="fas fa-handshake"></i> Clients
             </a>
+            <a href="?page=sliders" <?php echo $page === 'sliders' ? 'class="active"' : ''; ?>>
+                <i class="fas fa-images"></i> Home Sliders
+            </a>
             <a href="?page=password" <?php echo $page === 'password' ? 'class="active"' : ''; ?>>
                 <i class="fas fa-key"></i> Change Password
             </a>
@@ -1316,6 +1319,150 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "    }";
                 echo "  });";
                 echo "}";
+                echo "</script>";
+                
+            } elseif ($page === 'sliders') {
+                echo "<h2>Home Sliders Management</h2>";
+                echo "<button onclick='showAddSlider()' style='background: #007cba; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 20px 0;'>Add New Slider</button>";
+                
+                echo "<div id='sliderForm' style='display: none; background: #f9f9f9; padding: 20px; margin: 20px 0; border-radius: 5px;'>";
+                echo "<h3 id='sliderFormTitle'>Add New Slider</h3>";
+                echo "<form onsubmit='saveSlider(event)'>";
+                echo "<input type='hidden' id='sliderId' value=''>";
+                echo "<input type='text' id='sliderTitle' placeholder='Slider Title' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;' required>";
+                echo "<textarea id='sliderDescription' placeholder='Slider Description' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; height: 80px;'></textarea>";
+                echo "<input type='file' id='sliderImageFile' accept='image/*' style='margin-bottom: 10px;' onchange='uploadSliderImage()'>";
+                echo "<input type='text' id='sliderImageUrl' placeholder='Or enter image URL' style='width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;'>";
+                echo "<div id='sliderImagePreview' style='margin-top: 10px;'></div>";
+                echo "<input type='text' id='sliderButtonText' placeholder='Button 1 Text (optional)' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;'>";
+                echo "<input type='text' id='sliderButtonLink' placeholder='Button 1 Link (optional)' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;'>";
+                echo "<input type='text' id='sliderButtonText2' placeholder='Button 2 Text (optional)' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;'>";
+                echo "<input type='text' id='sliderButtonLink2' placeholder='Button 2 Link (optional)' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;'>";
+                echo "<input type='number' id='sliderSortOrder' placeholder='Sort Order' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;' value='0'>";
+                echo "<select id='sliderStatus' style='width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;'>";
+                echo "<option value='active'>Active</option>";
+                echo "<option value='inactive'>Inactive</option>";
+                echo "</select>";
+                echo "<button type='submit' style='background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;'>Save</button>";
+                echo "<button type='button' onclick='cancelSlider()' style='background: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;'>Cancel</button>";
+                echo "</form>";
+                echo "</div>";
+                
+                $stmt = $pdo->query("SELECT * FROM sliders ORDER BY sort_order ASC, created_at DESC");
+                $sliders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                if (count($sliders) > 0) {
+                    echo "<table>";
+                    echo "<tr><th>S. No</th><th>Image</th><th>Title</th><th>Button</th><th>Order</th><th>Status</th><th>Actions</th></tr>";
+                    
+                    foreach ($sliders as $row) {
+                        echo "<tr>";
+                        echo "<td>" . $row['id'] . "</td>";
+                        echo "<td><img src='" . htmlspecialchars($row['image_url']) . "' style='width: 60px; height: 40px; object-fit: cover; border-radius: 4px;'></td>";
+                        echo "<td>" . htmlspecialchars($row['title']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['button_text'] ?: 'No Button') . "</td>";
+                        echo "<td>" . $row['sort_order'] . "</td>";
+                        echo "<td><span style='padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; " . ($row['status'] === 'active' ? 'background: #d4edda; color: #155724;' : 'background: #f8d7da; color: #721c24;') . "'>" . ucfirst($row['status']) . "</span></td>";
+                        echo "<td style='white-space: nowrap;'>";
+                        echo "<button onclick='editSlider({$row['id']})' style='background: #007cba; color: white; border: none; padding: 6px 8px; border-radius: 4px; margin-right: 5px; cursor: pointer; font-size: 14px;' title='Edit'><i class='fas fa-edit'></i></button>";
+                        echo "<button onclick='if(confirm(\"Delete this slider?\")) deleteSlider({$row['id']})' style='background: #dc3545; color: white; border: none; padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 14px;' title='Delete'><i class='fas fa-trash'></i></button>";
+                        echo "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</table>";
+                } else {
+                    echo "<p>No sliders found.</p>";
+                }
+                
+                echo "<script>";
+                echo "function uploadSliderImage() {";
+                echo "  const file = document.getElementById('sliderImageFile').files[0];";
+                echo "  if (!file) return;";
+                echo "  const formData = new FormData();";
+                echo "  formData.append('image', file);";
+                echo "  fetch('upload-image.php', { method: 'POST', body: formData })";
+                echo "    .then(r => r.text()).then(text => {";
+                echo "      console.log('Upload response:', text);";
+                echo "      try {";
+                echo "        const data = JSON.parse(text);";
+                echo "        if (data.success) {";
+                echo "          document.getElementById('sliderImageUrl').value = data.url;";
+                echo "          document.getElementById('sliderImagePreview').innerHTML = '<img src=\"' + data.url + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\">';";
+                echo "        } else {";
+                echo "          alert('Upload failed: ' + data.error);";
+                echo "        }";
+                echo "      } catch(e) {";
+                echo "        alert('Upload error: ' + text);";
+                echo "      }";
+                echo "    }).catch(err => alert('Network error: ' + err));";
+                echo "}";
+                echo "function showAddSlider() {";
+                echo "  document.getElementById('sliderFormTitle').textContent = 'Add New Slider';";
+                echo "  document.getElementById('sliderId').value = '';";
+                echo "  document.getElementById('sliderTitle').value = '';";
+                echo "  document.getElementById('sliderDescription').value = '';";
+                echo "  document.getElementById('sliderImageUrl').value = '';";
+                echo "  document.getElementById('sliderImageFile').value = '';";
+                echo "  document.getElementById('sliderImagePreview').innerHTML = '';";
+                echo "  document.getElementById('sliderButtonText').value = '';";
+                echo "  document.getElementById('sliderButtonLink').value = '';";
+                echo "  document.getElementById('sliderButtonText2').value = '';";
+                echo "  document.getElementById('sliderButtonLink2').value = '';";
+                echo "  document.getElementById('sliderSortOrder').value = '0';";
+                echo "  document.getElementById('sliderStatus').value = 'active';";
+                echo "  document.getElementById('sliderForm').style.display = 'block';";
+                echo "}";
+                echo "function editSlider(id) {";
+                echo "  fetch('sliders-api.php?path=admin')";
+                echo "    .then(r => r.json())";
+                echo "    .then(data => {";
+                echo "      const slider = data.find(s => s.id == id);";
+                echo "      if (slider) {";
+                echo "        document.getElementById('sliderFormTitle').textContent = 'Edit Slider';";
+                echo "        document.getElementById('sliderId').value = slider.id;";
+                echo "        document.getElementById('sliderTitle').value = slider.title;";
+                echo "        document.getElementById('sliderDescription').value = slider.description;";
+                echo "        document.getElementById('sliderImageUrl').value = slider.image_url;";
+                echo "        document.getElementById('sliderImageFile').value = '';";
+                echo "        document.getElementById('sliderImagePreview').innerHTML = '<img src=\"' + slider.image_url + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\">';";
+                echo "        document.getElementById('sliderButtonText').value = slider.button_text || '';";
+                echo "        document.getElementById('sliderButtonLink').value = slider.button_link || '';";
+                echo "        document.getElementById('sliderButtonText2').value = slider.button_text_2 || '';";
+                echo "        document.getElementById('sliderButtonLink2').value = slider.button_link_2 || '';";
+                echo "        document.getElementById('sliderSortOrder').value = slider.sort_order;";
+                echo "        document.getElementById('sliderStatus').value = slider.status;";
+                echo "        document.getElementById('sliderForm').style.display = 'block';";
+                echo "      }";
+                echo "    });";
+                echo "}";
+                echo "function deleteSlider(id) {";
+                echo "  fetch('sliders-api.php?path=delete/' + id, { method: 'DELETE' })";
+                echo "    .then(() => location.reload());";
+                echo "}";
+                echo "function saveSlider(e) {";
+                echo "  e.preventDefault();";
+                echo "  const imageUrl = document.getElementById('sliderImageUrl').value;";
+                echo "  if (!imageUrl) { alert('Please upload an image or enter an image URL'); return; }";
+                echo "  const id = document.getElementById('sliderId').value;";
+                echo "  const url = id ? 'sliders-api.php?path=update/' + id : 'sliders-api.php?path=create';";
+                echo "  const method = id ? 'PUT' : 'POST';";
+                echo "  fetch(url, {";
+                echo "    method: method,";
+                echo "    headers: {'Content-Type': 'application/json'},";
+                echo "    body: JSON.stringify({";
+                echo "      title: document.getElementById('sliderTitle').value,";
+                echo "      description: document.getElementById('sliderDescription').value,";
+                echo "      image_url: imageUrl,";
+                echo "      button_text: document.getElementById('sliderButtonText').value,";
+                echo "      button_link: document.getElementById('sliderButtonLink').value,";
+                echo "      button_text_2: document.getElementById('sliderButtonText2').value,";
+                echo "      button_link_2: document.getElementById('sliderButtonLink2').value,";
+                echo "      sort_order: document.getElementById('sliderSortOrder').value,";
+                echo "      status: document.getElementById('sliderStatus').value";
+                echo "    })";
+                echo "  }).then(() => location.reload());";
+                echo "}";
+                echo "function cancelSlider() { document.getElementById('sliderForm').style.display = 'none'; }";
                 echo "</script>";
             }
             

@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
+
+import HomeSlider from "@/components/HomeSlider";
 import Stats from "@/components/Stats";
 import Products from "@/components/Products";
 import Process from "@/components/Process";
@@ -73,7 +74,7 @@ const Index = () => {
       </div>
       
       <Navbar />
-      <Hero />
+      <HomeSlider />
       
       <div 
         ref={statsRef}
