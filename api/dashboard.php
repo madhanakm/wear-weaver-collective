@@ -159,6 +159,9 @@ $page = $_GET['page'] ?? 'contacts';
             <a href="?page=password" <?php echo $page === 'password' ? 'class="active"' : ''; ?>>
                 <i class="fas fa-key"></i> Change Password
             </a>
+            <a href="logout.php" style="margin-top: 20px; border-top: 1px solid #374151; padding-top: 20px;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
         </nav>
     </div>
     
