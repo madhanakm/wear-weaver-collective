@@ -1360,12 +1360,7 @@ $page = $_GET['page'] ?? 'contacts';
                         echo "<td>" . $row['id'] . "</td>";
                         $imageUrl = $row['image_url'];
                         if (!str_starts_with($imageUrl, 'http')) {
-                            // Fix old paths that don't have /api/ prefix
-                            if (str_starts_with($imageUrl, '/uploads/')) {
-                                $imageUrl = 'https://ai.thinkaside.com/api' . $imageUrl;
-                            } else {
-                                $imageUrl = 'https://ai.thinkaside.com' . $imageUrl;
-                            }
+                            $imageUrl = 'https://ai.thinkaside.com' . $imageUrl;
                         }
                         echo "<td><img src='" . htmlspecialchars($imageUrl) . "' style='width: 60px; height: 40px; object-fit: cover; border-radius: 4px;'></td>";
                         echo "<td>" . htmlspecialchars($row['title']) . "</td>";
