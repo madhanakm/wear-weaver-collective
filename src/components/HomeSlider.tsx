@@ -11,8 +11,6 @@ interface Slider {
   image_url: string;
   button_text?: string;
   button_link?: string;
-  button_text_2?: string;
-  button_link_2?: string;
   sort_order: number;
   status: string;
 }
@@ -79,9 +77,9 @@ const HomeSlider = () => {
                       {slider.description}
                     </p>
                   )}
-                  <div className="flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: '0.6s' }}>
-                    {slider.button_text && slider.button_link && (
-                      slider.button_link.startsWith('/') ? (
+                  {slider.button_text && slider.button_link && (
+                    <div className="animate-fade-in" style={{ animationDelay: '0.6s' }}>
+                      {slider.button_link.startsWith('/') ? (
                         <Link to={slider.button_link}>
                           <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg font-semibold">
                             {slider.button_text}
@@ -93,24 +91,9 @@ const HomeSlider = () => {
                             {slider.button_text}
                           </Button>
                         </a>
-                      )
-                    )}
-                    {slider.button_text_2 && slider.button_link_2 && (
-                      slider.button_link_2.startsWith('/') ? (
-                        <Link to={slider.button_link_2}>
-                          <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 text-lg font-semibold">
-                            {slider.button_text_2}
-                          </Button>
-                        </Link>
-                      ) : (
-                        <a href={slider.button_link_2} target="_blank" rel="noopener noreferrer">
-                          <Button size="lg" variant="outline" className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 text-lg font-semibold">
-                            {slider.button_text_2}
-                          </Button>
-                        </a>
-                      )
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

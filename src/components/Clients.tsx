@@ -13,7 +13,7 @@ const Clients = () => {
   const [clients, setClients] = useState<Client[]>([]);
 
   useEffect(() => {
-    fetch(`${API_ENDPOINTS.CLIENTS}?path=public`)
+    fetch(API_ENDPOINTS.CLIENTS)
       .then(res => res.json())
       .then(data => {
         const processedData = processImageUrls(data || []);

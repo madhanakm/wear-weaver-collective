@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Clients from "@/components/Clients";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
@@ -191,6 +192,8 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      <Clients />
 
       <Footer />
     </div>

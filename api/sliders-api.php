@@ -30,15 +30,13 @@ try {
         
     } elseif ($path === 'create' && $method === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $pdo->prepare("INSERT INTO sliders (title, description, image_url, button_text, button_link, button_text_2, button_link_2, sort_order, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO sliders (title, description, image_url, button_text, button_link, sort_order, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([
             $data['title'], 
             $data['description'], 
             $data['image_url'], 
             $data['button_text'], 
             $data['button_link'], 
-            $data['button_text_2'], 
-            $data['button_link_2'], 
             $data['sort_order'] ?? 0, 
             $data['status'] ?? 'active'
         ]);
@@ -47,15 +45,13 @@ try {
     } elseif (strpos($path, 'update/') === 0 && $method === 'PUT') {
         $id = substr($path, 7);
         $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $pdo->prepare("UPDATE sliders SET title = ?, description = ?, image_url = ?, button_text = ?, button_link = ?, button_text_2 = ?, button_link_2 = ?, sort_order = ?, status = ? WHERE id = ?");
+        $stmt = $pdo->prepare("UPDATE sliders SET title = ?, description = ?, image_url = ?, button_text = ?, button_link = ?, sort_order = ?, status = ? WHERE id = ?");
         $stmt->execute([
             $data['title'], 
             $data['description'], 
             $data['image_url'], 
             $data['button_text'], 
             $data['button_link'], 
-            $data['button_text_2'], 
-            $data['button_link_2'], 
             $data['sort_order'], 
             $data['status'], 
             $id
@@ -73,6 +69,7 @@ try {
     }
     
 } catch(Exception $e) {
-    echo json_encode(['error' => 'Database connection failed']);
+    error_log('Sliders API Error: ' . $e->getMessage());
+    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
 }
 ?>

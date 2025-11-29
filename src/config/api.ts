@@ -1,4 +1,6 @@
-export const API_BASE_URL = 'https://ai.thinkaside.com';
+import { ENV } from './environment';
+
+export const API_BASE_URL = ENV.API_BASE_URL;
 
 export const API_ENDPOINTS = {
   BASE_URL: API_BASE_URL,
@@ -19,7 +21,17 @@ export const API_ENDPOINTS = {
 export const getImageUrl = (url: string): string => {
   if (!url) return '';
   if (url.startsWith('http')) return url;
-  return url.startsWith('/') ? `https://ai.thinkaside.com${url}` : url;
+  
+  // Clean up the URL and construct properly
+  let cleanUrl = url;
+  if (cleanUrl.startsWith('/api/')) {
+    cleanUrl = cleanUrl.substring(5); // Remove /api/
+  }
+  if (cleanUrl.startsWith('/')) {
+    cleanUrl = cleanUrl.substring(1); // Remove leading /
+  }
+  
+  return `http://localhost/api/${cleanUrl}`;
 };
 
 // Utility function to process API response data with image URLs
