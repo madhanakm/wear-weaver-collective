@@ -16,7 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $uploadDir = __DIR__ . '/uploads/';
 if (!file_exists($uploadDir)) {
-    mkdir($uploadDir, 0777, true);
+    mkdir($uploadDir, 0755, true);
+    chmod($uploadDir, 0755);
 }
 
 if (!isset($_FILES['image'])) {
@@ -42,9 +43,11 @@ $filename = uniqid() . '.' . $extension;
 $filepath = $uploadDir . $filename;
 
 if (move_uploaded_file($file['tmp_name'], $filepath)) {
-    $url = 'http://localhost/api/uploads/' . $filename;
+    chmod($filepath, 0644);
+    $url = 'https://ai.thinkaside.com/api/uploads/' . $filename;
     echo json_encode(['success' => true, 'url' => $url]);
 } else {
-    echo json_encode(['error' => 'Upload failed']);
+    $error = error_get_last();
+    echo json_encode(['error' => 'Upload failed: ' . ($error['message'] ?? 'Unknown error')]);
 }
 ?>
