@@ -44,9 +44,7 @@ $filepath = $uploadDir . $filename;
 
 if (move_uploaded_file($file['tmp_name'], $filepath)) {
     chmod($filepath, 0644);
-    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-    $host = $_SERVER['HTTP_HOST'];
-    $url = $protocol . '://' . $host . '/api/uploads/' . $filename;
+    $url = '/uploads/' . $filename;
     echo json_encode(['success' => true, 'url' => $url]);
 } else {
     $error = error_get_last();
