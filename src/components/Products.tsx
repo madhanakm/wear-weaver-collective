@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { useState, useEffect } from "react";
-import { API_ENDPOINTS } from "@/config/api";
+import { API_ENDPOINTS, processImageUrls } from "@/config/api";
 
 interface Product {
   id: string;
@@ -23,7 +23,8 @@ const Products = () => {
       .then(res => res.json())
       .then(data => {
         console.log('Products data:', data);
-        setProducts(data.slice(0, 4));
+        const processedData = processImageUrls(data);
+        setProducts(processedData.slice(0, 4));
       })
       .catch(err => console.error('Error fetching products:', err));
   }, []);

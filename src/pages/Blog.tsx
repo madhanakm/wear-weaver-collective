@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "lucide-react";
-import { API_ENDPOINTS } from "@/config/api";
+import { API_ENDPOINTS, processImageUrls } from "@/config/api";
 
 interface BlogPost {
   id: number;
@@ -27,7 +27,8 @@ const Blog = () => {
       .then(text => {
         try {
           const data = JSON.parse(text);
-          setPosts(Array.isArray(data) ? data : []);
+          const processedData = processImageUrls(Array.isArray(data) ? data : []);
+          setPosts(processedData);
         } catch (e) {
           console.error('JSON parse error:', e);
           setPosts([]);

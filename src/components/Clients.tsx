@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
-import { API_ENDPOINTS } from "@/config/api";
+import { API_ENDPOINTS, processImageUrls } from "@/config/api";
 
 interface Client {
   id: string;
@@ -15,7 +15,10 @@ const Clients = () => {
   useEffect(() => {
     fetch(`${API_ENDPOINTS.CLIENTS}?path=public`)
       .then(res => res.json())
-      .then(data => setClients(data || []))
+      .then(data => {
+        const processedData = processImageUrls(data || []);
+        setClients(processedData);
+      })
       .catch(err => setClients([]));
   }, []);
 

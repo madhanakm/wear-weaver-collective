@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { useState, useEffect } from "react";
-import { API_ENDPOINTS } from "@/config/api";
+import { API_ENDPOINTS, processImageUrls } from "@/config/api";
 
 interface Testimonial {
   id: number;
@@ -21,7 +21,10 @@ const Testimonials = () => {
   useEffect(() => {
     fetch(API_ENDPOINTS.TESTIMONIALS)
       .then(response => response.json())
-      .then(data => setTestimonials(data))
+      .then(data => {
+        const processedData = processImageUrls(data);
+        setTestimonials(processedData);
+      })
       .catch(error => console.error('Error fetching testimonials:', error));
   }, []);
 

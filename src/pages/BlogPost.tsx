@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar } from "lucide-react";
-import { API_ENDPOINTS } from "@/config/api";
+import { API_ENDPOINTS, processImageUrls } from "@/config/api";
 
 interface Post {
   id: number;
@@ -24,7 +24,8 @@ const BlogPost = () => {
       fetch(API_ENDPOINTS.BLOG_POST(slug))
         .then(res => res.json())
         .then(data => {
-          setPost(data.error ? null : data);
+          const processedData = data.error ? null : processImageUrls(data);
+          setPost(processedData);
           setLoading(false);
         })
         .catch(() => setLoading(false));

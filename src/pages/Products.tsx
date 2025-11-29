@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { API_ENDPOINTS } from "@/config/api";
+import { API_ENDPOINTS, processImageUrls } from "@/config/api";
 import "../animations.css";
 
 interface Product {
@@ -30,8 +30,9 @@ const Products = () => {
     fetch(API_ENDPOINTS.PRODUCTS)
       .then(response => response.json())
       .then(data => {
-        setProducts(data);
-        setTotalPages(Math.ceil(data.length / productsPerPage));
+        const processedData = processImageUrls(data);
+        setProducts(processedData);
+        setTotalPages(Math.ceil(processedData.length / productsPerPage));
       })
       .catch(error => console.error('Error fetching products:', error));
   }, []);

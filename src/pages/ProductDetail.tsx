@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { API_ENDPOINTS } from "@/config/api";
+import { API_ENDPOINTS, processImageUrls } from "@/config/api";
 import { X } from "lucide-react";
 
 interface Product {
@@ -34,9 +34,11 @@ const ProductDetail = () => {
         fetch(API_ENDPOINTS.PRODUCTS).then(r => r.json()),
         fetch(API_ENDPOINTS.PRODUCT_GALLERY(id)).then(r => r.json())
       ]).then(([products, galleryData]) => {
-        const productData = products.find((p: Product) => p.id.toString() === id);
+        const processedProducts = processImageUrls(products);
+        const processedGallery = processImageUrls(galleryData);
+        const productData = processedProducts.find((p: Product) => p.id.toString() === id);
         setProduct(productData);
-        setGallery(galleryData);
+        setGallery(processedGallery);
       }).catch(error => {
         console.error('Error fetching data:', error);
         setProduct({} as Product);
