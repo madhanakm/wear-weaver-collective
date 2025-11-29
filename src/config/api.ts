@@ -13,3 +13,33 @@ export const API_ENDPOINTS = {
   PRODUCT_GALLERY: (id: string) => `${API_BASE_URL}/products-api.php?path=gallery/${id}`,
   CLIENTS: `${API_BASE_URL}/clients-api.php`,
 };
+
+// Utility function to convert relative image URLs to absolute URLs
+export const getImageUrl = (url: string): string => {
+  if (!url) return '';
+  return url.startsWith('/') ? `${API_BASE_URL}${url}` : url;
+};
+
+// Utility function to process API response data with image URLs
+export const processImageUrls = (data: any): any => {
+  if (Array.isArray(data)) {
+    return data.map(item => processImageUrls(item));
+  }
+  
+  if (typeof data === 'object' && data !== null) {
+    const processed = { ...data };
+    
+    // Common image field names
+    const imageFields = ['image_url', 'logo_url', 'featured_image'];
+    
+    imageFields.forEach(field => {
+      if (processed[field]) {
+        processed[field] = getImageUrl(processed[field]);
+      }
+    });
+    
+    return processed;
+  }
+  
+  return data;
+};

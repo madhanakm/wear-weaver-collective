@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
-import { API_ENDPOINTS } from "@/config/api";
+import { API_ENDPOINTS, processImageUrls } from "@/config/api";
 import "../animations.css";
 
 // Add custom keyframes for special effects
@@ -61,8 +61,12 @@ const Gallery = () => {
     ]).then(([galleryData, filtersData]) => {
       console.log('Gallery data:', galleryData);
       console.log('Filters data:', filtersData);
-      setGalleryItems(galleryData);
-      setFilteredItems(galleryData);
+      
+      const processedGalleryData = processImageUrls(galleryData);
+      
+      console.log('Processed gallery data:', processedGalleryData);
+      setGalleryItems(processedGalleryData);
+      setFilteredItems(processedGalleryData);
       setFilters(['all', ...filtersData.map((f: any) => f.name)]);
     }).catch(error => {
       console.error('Error fetching data:', error);
