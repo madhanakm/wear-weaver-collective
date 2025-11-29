@@ -1,9 +1,9 @@
 <?php
 $DB_CONFIG = [
     'host' => 'localhost',
-    'dbname' => 'quote_system',
-    'username' => 'root',
-    'password' => ''
+    'dbname' => 'nsg',
+    'username' => 'nsg',
+    'password' => 'nsg'
 ];
 
 function getDbConnection() {
