@@ -1358,7 +1358,11 @@ $page = $_GET['page'] ?? 'contacts';
                     foreach ($sliders as $row) {
                         echo "<tr>";
                         echo "<td>" . $row['id'] . "</td>";
-                        echo "<td><img src='" . htmlspecialchars($row['image_url']) . "' style='width: 60px; height: 40px; object-fit: cover; border-radius: 4px;'></td>";
+                        $imageUrl = $row['image_url'];
+                        if (!str_starts_with($imageUrl, 'http')) {
+                            $imageUrl = 'https://ai.thinkaside.com' . $imageUrl;
+                        }
+                        echo "<td><img src='" . htmlspecialchars($imageUrl) . "' style='width: 60px; height: 40px; object-fit: cover; border-radius: 4px;'></td>";
                         echo "<td>" . htmlspecialchars($row['title']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['button_text'] ?: 'No Button') . "</td>";
                         echo "<td>" . $row['sort_order'] . "</td>";
@@ -1424,7 +1428,11 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "        document.getElementById('sliderDescription').value = slider.description;";
                 echo "        document.getElementById('sliderImageUrl').value = slider.image_url;";
                 echo "        document.getElementById('sliderImageFile').value = '';";
-                echo "        document.getElementById('sliderImagePreview').innerHTML = '<img src=\"' + slider.image_url + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\">';";
+                echo "        let imageUrl = slider.image_url;";
+                echo "        if (!imageUrl.startsWith('http')) {";
+                echo "          imageUrl = 'https://ai.thinkaside.com' + imageUrl;";
+                echo "        }";
+                echo "        document.getElementById('sliderImagePreview').innerHTML = '<img src=\"' + imageUrl + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\">';";
                 echo "        document.getElementById('sliderButtonText').value = slider.button_text || '';";
                 echo "        document.getElementById('sliderButtonLink').value = slider.button_link || '';";
                 echo "        document.getElementById('sliderButtonText2').value = slider.button_text_2 || '';";

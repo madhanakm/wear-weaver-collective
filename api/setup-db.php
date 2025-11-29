@@ -1,9 +1,9 @@
 <?php
 // Database configuration
 $host = 'localhost';
-$dbname = 'quote_system';
-$username = 'root';
-$password = '';
+$dbname = 'nsg';
+$username = 'nsg';
+$password = 'nsg';
 
 try {
     $pdo = new PDO("mysql:host=$host", $username, $password);

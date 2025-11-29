@@ -22,15 +22,23 @@ const HomeSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
+    console.log('Fetching sliders from:', API_ENDPOINTS.SLIDERS);
     fetch(API_ENDPOINTS.SLIDERS)
-      .then(res => res.json())
-      .then(data => {
-        console.log('Raw slider data:', data);
+      .then(res => {
+        console.log('Slider response status:', res.status);
+        return res.text();
+      })
+      .then(text => {
+        console.log('Slider raw response:', text);
+        const data = JSON.parse(text);
         const processedData = processImageUrls(data);
-        console.log('Processed slider data:', processedData);
+        console.log('Processed sliders:', processedData);
         setSliders(processedData);
       })
-      .catch(error => console.error('Error fetching sliders:', error));
+      .catch(error => {
+        console.error('Error fetching sliders:', error);
+        setSliders([]);
+      });
   }, []);
 
   useEffect(() => {
