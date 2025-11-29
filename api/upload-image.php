@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$uploadDir = __DIR__ . '/uploads/';
+$uploadDir = dirname(__DIR__) . '/uploads/';
 if (!file_exists($uploadDir)) {
     mkdir($uploadDir, 0755, true);
     chmod($uploadDir, 0755);
