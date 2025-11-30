@@ -69,6 +69,11 @@ try {
                 ]);
                 
                 echo json_encode(['success' => true]);
+            } elseif (preg_match('/^delete\/(.+)$/', $path, $matches)) {
+                $id = $matches[1];
+                $stmt = $pdo->prepare("DELETE FROM blog_posts WHERE id = ?");
+                $stmt->execute([$id]);
+                echo json_encode(['success' => true]);
             }
             break;
             
@@ -94,7 +99,6 @@ try {
             break;
             
         case 'DELETE':
-        case 'POST':
             if (preg_match('/^delete\/(.+)$/', $path, $matches)) {
                 $id = $matches[1];
                 $stmt = $pdo->prepare("DELETE FROM blog_posts WHERE id = ?");
