@@ -77,6 +77,7 @@ try {
             break;
             
         case 'DELETE':
+        case 'POST':
             if (preg_match('/^delete\/(.+)$/', $path, $matches)) {
                 $id = $matches[1];
                 $stmt = $pdo->prepare("DELETE FROM blog_posts WHERE id = ?");
