@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import ScrollToTop from "@/components/ScrollToTop";
 import Preloader from "@/components/Preloader";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import GoToTop from "@/components/GoToTop";
 import Index from "./pages/Index";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
@@ -43,6 +44,7 @@ const App = () => {
       <HashRouter>
         <ScrollToTop />
         <WhatsAppFloat />
+        <GoToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/gallery" element={<Gallery />} />

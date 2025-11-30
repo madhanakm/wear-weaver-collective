@@ -24,7 +24,7 @@ const Products = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [heroRef, heroVisible] = useIntersectionObserver();
   const [productsRef, productsVisible] = useIntersectionObserver();
-  const productsPerPage = 6;
+  const productsPerPage = 8;
 
   useEffect(() => {
     fetch(API_ENDPOINTS.PRODUCTS)
@@ -148,7 +148,7 @@ const Products = () => {
         </div>
         
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {getCurrentPageProducts().map((product, index) => (
               <Card 
                 key={index} 
@@ -158,27 +158,23 @@ const Products = () => {
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
                 <CardContent className="p-0">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
-                    <div className="relative aspect-square lg:aspect-auto overflow-hidden">
-                      <img
-                        src={product.image_url}
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                    <div className="p-8 flex flex-col justify-between bg-gradient-to-br from-background to-muted/30">
-                      <div>
-                        <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">{product.name}</h3>
-                        <p className="text-muted-foreground mb-8 leading-relaxed">{product.description}</p>
-                      </div>
-                      <Link to={`/product/${product.id}`} className="mt-auto">
-                        <Button className="w-full group-hover:shadow-[var(--shadow-primary)] transition-all duration-300">
-                          View Details
-                          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                        </Button>
-                      </Link>
-                    </div>
+                  <div className="relative aspect-square overflow-hidden">
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                  <div className="p-6 bg-gradient-to-br from-background to-muted/30">
+                    <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{product.name}</h3>
+                    <p className="text-muted-foreground mb-4 text-sm leading-relaxed line-clamp-3">{product.description}</p>
+                    <Link to={`/product/${product.id}`}>
+                      <Button size="sm" className="w-full group-hover:shadow-[var(--shadow-primary)] transition-all duration-300">
+                        View Details
+                        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
