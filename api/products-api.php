@@ -56,7 +56,7 @@ try {
         $stmt->execute([$productId]);
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         
-    } elseif (strpos($path, 'delete-gallery/') === 0 && $method === 'DELETE') {
+    } elseif (strpos($path, 'delete-gallery/') === 0 && ($method === 'DELETE' || $method === 'POST')) {
         $id = substr($path, 15);
         $stmt = $pdo->prepare("DELETE FROM product_gallery WHERE id = ?");
         $stmt->execute([$id]);
