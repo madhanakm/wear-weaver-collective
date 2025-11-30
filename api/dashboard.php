@@ -7,23 +7,8 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
 }
 
 // API Configuration
-// Load environment configuration
-$envFile = __DIR__ . '/../.env';
-if (file_exists($envFile)) {
-    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        if (strpos($line, 'VITE_API_BASE_URL=') === 0) {
-            $API_BASE_URL = substr($line, 18);
-            break;
-        }
-    }
-}
-if (!isset($API_BASE_URL)) {
-    $API_BASE_URL = 'http://localhost/api';
-} else {
-    $API_BASE_URL = rtrim($API_BASE_URL, '/');
-}
-$API_URL = $API_BASE_URL . '/api';
+// Load centralized URL configuration
+require_once 'config/urls.php';
 
 $page = $_GET['page'] ?? 'contacts';
 ?>
@@ -1513,7 +1498,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "<script>";
                 echo "function scanImages() {";
                 echo "  document.getElementById('scanResults').innerHTML = '<p>Scanning...</p>';";
-                echo "  fetch('cleanup-images.php')";
+                echo "  fetch('cleanup-api.php?path=scan')";
                 echo "    .then(r => r.json())";
                 echo "    .then(data => {";
                 echo "      if (data.error) {";
@@ -1537,7 +1522,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "}";
                 echo "function deleteUnused() {";
                 echo "  if (!confirm('Are you sure you want to delete all unused images? This cannot be undone.')) return;";
-                echo "  fetch('cleanup-images.php?action=delete')";
+                echo "  fetch('cleanup-api.php?path=delete', { method: 'POST' })";
                 echo "    .then(r => r.json())";
                 echo "    .then(data => {";
                 echo "      if (data.success) {";
