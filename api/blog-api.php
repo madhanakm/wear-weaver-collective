@@ -52,6 +52,23 @@ try {
                 ]);
                 
                 echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+            } elseif (preg_match('/^update\/(.+)$/', $path, $matches)) {
+                $id = $matches[1];
+                $input = json_decode(file_get_contents('php://input'), true);
+                $slug = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', trim($input['title'])));
+                
+                $stmt = $pdo->prepare("UPDATE blog_posts SET title = ?, slug = ?, content = ?, excerpt = ?, featured_image = ?, status = ? WHERE id = ?");
+                $stmt->execute([
+                    $input['title'],
+                    $slug,
+                    $input['content'],
+                    substr(strip_tags($input['content']), 0, 200) . '...',
+                    $input['featured_image'] ?? '',
+                    $input['status'] ?? 'draft',
+                    $id
+                ]);
+                
+                echo json_encode(['success' => true]);
             }
             break;
             
