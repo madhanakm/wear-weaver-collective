@@ -50,6 +50,12 @@ try {
         $stmt->execute([$productId, $data['title'], $data['image_url']]);
         echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
         
+    } elseif (strpos($path, 'gallery/') === 0 && $method === 'GET') {
+        $productId = substr($path, 8);
+        $stmt = $pdo->prepare("SELECT * FROM product_gallery WHERE product_id = ? ORDER BY created_at DESC");
+        $stmt->execute([$productId]);
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        
     } elseif (strpos($path, 'delete-gallery/') === 0 && $method === 'DELETE') {
         $id = substr($path, 15);
         $stmt = $pdo->prepare("DELETE FROM product_gallery WHERE id = ?");

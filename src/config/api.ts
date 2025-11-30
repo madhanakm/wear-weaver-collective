@@ -31,7 +31,7 @@ export const getImageUrl = (url: string): string => {
     cleanUrl = cleanUrl.substring(1); // Remove leading /
   }
   
-  return `http://localhost/api/${cleanUrl}`;
+  return `${API_BASE_URL}/${cleanUrl}`;
 };
 
 // Utility function to process API response data with image URLs
