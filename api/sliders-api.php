@@ -58,7 +58,7 @@ try {
         ]);
         echo json_encode(['success' => true]);
         
-    } elseif (strpos($path, 'delete/') === 0 && $method === 'DELETE') {
+    } elseif (strpos($path, 'delete/') === 0 && ($method === 'DELETE' || $method === 'POST')) {
         $id = substr($path, 7);
         $stmt = $pdo->prepare("DELETE FROM sliders WHERE id = ?");
         $stmt->execute([$id]);
