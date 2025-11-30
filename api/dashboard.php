@@ -767,7 +767,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "      document.getElementById('galleryImageUrl').value = data.url;";
                 echo "      const previewUrl = 'http://localhost/api/' + data.url;";
                 echo "      console.log('Preview URL:', previewUrl);";
-                echo "      document.getElementById('galleryImagePreview').innerHTML = '<img src=\"' + previewUrl + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\" onerror=\"console.error(\\\"Image failed to load:\\\", this.src)\">';";
+                echo "      document.getElementById('galleryImagePreview').innerHTML = '<img src=\"' + previewUrl + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\" onerror=\"console.error(&quot;Image failed to load:&quot;, this.src)\">';";
                 echo "    } else {";
                 echo "      alert('Upload failed: ' + (data.error || 'Unknown error'));";
                 echo "    }";
