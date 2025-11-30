@@ -7,7 +7,22 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
 }
 
 // API Configuration
-$API_BASE_URL = 'https://ai.thinkaside.com';
+// Load environment configuration
+$envFile = __DIR__ . '/../.env';
+if (file_exists($envFile)) {
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, 'VITE_API_BASE_URL=') === 0) {
+            $API_BASE_URL = substr($line, 18);
+            break;
+        }
+    }
+}
+if (!isset($API_BASE_URL)) {
+    $API_BASE_URL = 'http://localhost/api';
+} else {
+    $API_BASE_URL = rtrim($API_BASE_URL, '/');
+}
 $API_URL = $API_BASE_URL . '/api';
 
 $page = $_GET['page'] ?? 'contacts';
@@ -162,6 +177,9 @@ $page = $_GET['page'] ?? 'contacts';
             </a>
             <a href="?page=sliders" <?php echo $page === 'sliders' ? 'class="active"' : ''; ?>>
                 <i class="fas fa-images"></i> Home Sliders
+            </a>
+            <a href="?page=cleanup" <?php echo $page === 'cleanup' ? 'class="active"' : ''; ?>>
+                <i class="fas fa-trash-alt"></i> Image Cleanup
             </a>
             <a href="?page=password" <?php echo $page === 'password' ? 'class="active"' : ''; ?>>
                 <i class="fas fa-key"></i> Change Password
@@ -769,7 +787,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "    console.log('Upload response data:', data);";
                 echo "    if (data.success) {";
                 echo "      document.getElementById('galleryImageUrl').value = data.url;";
-                echo "      const previewUrl = 'https://ai.thinkaside.com/' + data.url;";
+                echo "      const previewUrl = '$API_BASE_URL/' + data.url;";
                 echo "      console.log('Preview URL:', previewUrl);";
                 echo "      document.getElementById('galleryImagePreview').innerHTML = '<img src=\"' + previewUrl + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\" onerror=\"console.error(&quot;Image failed to load:&quot;, this.src)\">';";
                 echo "    } else {";
@@ -1483,6 +1501,53 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "  });";
                 echo "}";
                 echo "function cancelSlider() { document.getElementById('sliderForm').style.display = 'none'; }";
+                echo "</script>";
+                
+            } elseif ($page === 'cleanup') {
+                echo "<h2>Image Cleanup</h2>";
+                echo "<p>Find and delete unused images to optimize storage space.</p>";
+                echo "<button onclick='scanImages()' style='background: #007cba; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 10px 5px 10px 0;'>Scan for Unused Images</button>";
+                echo "<button onclick='deleteUnused()' id='deleteBtn' style='background: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 10px 0; display: none;'>Delete All Unused</button>";
+                echo "<div id='scanResults' style='margin: 20px 0;'></div>";
+                
+                echo "<script>";
+                echo "function scanImages() {";
+                echo "  document.getElementById('scanResults').innerHTML = '<p>Scanning...</p>';";
+                echo "  fetch('cleanup-images.php')";
+                echo "    .then(r => r.json())";
+                echo "    .then(data => {";
+                echo "      if (data.error) {";
+                echo "        document.getElementById('scanResults').innerHTML = '<p style=\"color: red;\">Error: ' + data.error + '</p>';";
+                echo "        return;";
+                echo "      }";
+                echo "      const count = data.count;";
+                echo "      if (count === 0) {";
+                echo "        document.getElementById('scanResults').innerHTML = '<p style=\"color: green;\">No unused images found. Storage is optimized!</p>';";
+                echo "        document.getElementById('deleteBtn').style.display = 'none';";
+                echo "      } else {";
+                echo "        let html = '<h3>Found ' + count + ' unused images:</h3><ul>';";
+                echo "        data.unused_files.forEach(file => {";
+                echo "          html += '<li>' + file + '</li>';";
+                echo "        });";
+                echo "        html += '</ul>';";
+                echo "        document.getElementById('scanResults').innerHTML = html;";
+                echo "        document.getElementById('deleteBtn').style.display = 'inline-block';";
+                echo "      }";
+                echo "    });";
+                echo "}";
+                echo "function deleteUnused() {";
+                echo "  if (!confirm('Are you sure you want to delete all unused images? This cannot be undone.')) return;";
+                echo "  fetch('cleanup-images.php?action=delete')";
+                echo "    .then(r => r.json())";
+                echo "    .then(data => {";
+                echo "      if (data.success) {";
+                echo "        document.getElementById('scanResults').innerHTML = '<p style=\"color: green;\">Successfully deleted ' + data.count + ' unused images.</p>';";
+                echo "        document.getElementById('deleteBtn').style.display = 'none';";
+                echo "      } else {";
+                echo "        alert('Error: ' + (data.error || 'Failed to delete images'));";
+                echo "      }";
+                echo "    });";
+                echo "}";
                 echo "</script>";
             }
             
