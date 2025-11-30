@@ -60,7 +60,7 @@ const CTA = () => {
               </div>
               <div>
                 <h3 className="font-semibold mb-2 text-primary">Hours</h3>
-                <p className="text-muted-foreground">Mon-Fri: 9AM - 6PM</p>
+                <p className="text-muted-foreground">Mon-Sat: 9AM - 6PM</p>
               </div>
             </div>
           </div>
