@@ -35,8 +35,8 @@ try {
             $data['title'], 
             $data['description'], 
             $data['image_url'], 
-            $data['button_text'], 
-            $data['button_link'], 
+            $data['button_text'] ?? '', 
+            $data['button_link'] ?? '', 
             $data['sort_order'] ?? 0, 
             $data['status'] ?? 'active'
         ]);
@@ -50,10 +50,10 @@ try {
             $data['title'], 
             $data['description'], 
             $data['image_url'], 
-            $data['button_text'], 
-            $data['button_link'], 
-            $data['sort_order'], 
-            $data['status'], 
+            $data['button_text'] ?? '', 
+            $data['button_link'] ?? '', 
+            $data['sort_order'] ?? 0, 
+            $data['status'] ?? 'active', 
             $id
         ]);
         echo json_encode(['success' => true]);
