@@ -765,7 +765,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "    console.log('Upload response data:', data);";
                 echo "    if (data.success) {";
                 echo "      document.getElementById('galleryImageUrl').value = data.url;";
-                echo "      const previewUrl = 'http://localhost/api/' + data.url;";
+                echo "      const previewUrl = 'https://ai.thinkaside.com/' + data.url;";
                 echo "      console.log('Preview URL:', previewUrl);";
                 echo "      document.getElementById('galleryImagePreview').innerHTML = '<img src=\"' + previewUrl + '\" style=\"max-width: 200px; height: auto; border-radius: 4px;\" onerror=\"console.error(&quot;Image failed to load:&quot;, this.src)\">';";
                 echo "    } else {";
