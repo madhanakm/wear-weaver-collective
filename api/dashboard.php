@@ -1048,7 +1048,7 @@ $page = $_GET['page'] ?? 'contacts';
                     echo "  )).then(() => location.reload());";
                     echo "}";
                     echo "function deleteGalleryImage(id) {";
-                    echo "  fetch('$API_URL/products-api.php?path=delete-gallery/' + id, { method: 'POST' })";
+                    echo "  fetch('$API_BASE_URL/products-api.php?path=delete-gallery/' + id, { method: 'POST' })";
                     echo "    .then(() => location.reload());";
                     echo "}";
                     echo "</script>";
