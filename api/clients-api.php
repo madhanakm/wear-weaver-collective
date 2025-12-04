@@ -20,11 +20,23 @@ try {
         $stmt = $pdo->query("SELECT * FROM clients WHERE status = 'active' ORDER BY created_at DESC");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         
+    } elseif ($method === 'GET' && !$path) {
+        $stmt = $pdo->query("SELECT * FROM clients ORDER BY created_at DESC");
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        
     } elseif ($method === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $pdo->prepare("INSERT INTO clients (name, logo_url, status) VALUES (?, ?, ?)");
-        $stmt->execute([$data['name'], $data['logo_url'], $data['status'] ?? 'active']);
-        echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+        if (isset($data['id']) && $data['id']) {
+            // Update
+            $stmt = $pdo->prepare("UPDATE clients SET name = ?, logo_url = ?, status = ? WHERE id = ?");
+            $stmt->execute([$data['name'], $data['logo_url'], $data['status'], $data['id']]);
+            echo json_encode(['success' => true]);
+        } else {
+            // Create
+            $stmt = $pdo->prepare("INSERT INTO clients (name, logo_url, status) VALUES (?, ?, ?)");
+            $stmt->execute([$data['name'], $data['logo_url'], $data['status'] ?? 'active']);
+            echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+        }
         
     } elseif ($method === 'PUT') {
         $data = json_decode(file_get_contents('php://input'), true);
