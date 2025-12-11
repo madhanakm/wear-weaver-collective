@@ -49,43 +49,14 @@ const Blog = () => {
     <div className="min-h-screen">
       <Navbar />
       
-      {/* Hero Section with Animated Background */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-primary/10 via-background to-accent/10 relative overflow-hidden">
-        {/* Floating Blog Elements */}
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 bg-gradient-to-br from-primary/5 via-background to-primary-glow/5 relative overflow-hidden">
+        {/* Minimal Background */}
         <div className="absolute inset-0">
-          {/* Reading Icons */}
-          {['📖', '✍️', '💡', '🚀'].map((icon, i) => (
-            <div
-              key={i}
-              className="absolute text-4xl opacity-20 animate-float"
-              style={{
-                left: `${15 + i * 20}%`,
-                top: `${20 + (i % 2) * 40}%`,
-                animationDelay: `${i * 1.5}s`,
-                animationDuration: `${6 + i * 2}s`
-              }}
-            >
-              {icon}
-            </div>
-          ))}
-          
-          {/* Gradient Orbs */}
-          <div className="absolute top-20 left-20 w-40 h-40 bg-gradient-to-br from-primary/15 to-accent/15 blur-3xl animate-morphing" style={{ animationDuration: '20s' }}></div>
-          <div className="absolute bottom-20 right-20 w-32 h-32 bg-gradient-to-tl from-accent/12 to-primary/12 blur-2xl animate-drift" style={{ animationDuration: '16s' }}></div>
-          
-          {/* Particle Dots */}
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-primary/30 rounded-full animate-glow"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.5}s`,
-                animationDuration: `${3 + Math.random() * 2}s`
-              }}
-            />
-          ))}
+          <div className="absolute top-20 left-20 w-40 h-40 bg-gradient-to-br from-primary/8 to-accent/8 blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-32 h-32 bg-gradient-to-tl from-accent/6 to-primary/6 blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-gradient-to-r from-primary/4 to-accent/4 blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '50px 50px' }}></div>
         </div>
         
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">

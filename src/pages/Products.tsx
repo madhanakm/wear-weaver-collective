@@ -44,49 +44,25 @@ const Products = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-primary-glow/5">
       <Navbar />
       
       {/* Hero Section */}
       <section ref={heroRef} className="pt-32 pb-20 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden">
-        {/* Animated Background Elements */}
+        {/* Simple Background */}
         <div className="absolute inset-0">
-          {/* Morphing Gradient Orbs */}
-          <div className="absolute top-10 left-10 w-72 h-72 bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl animate-morphing animate-glow"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-tl from-accent/15 to-primary/15 blur-3xl animate-float"></div>
-          <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-r from-primary/10 to-accent/10 blur-2xl animate-drift"></div>
-          
-          {/* Floating Particles */}
-          <div className="absolute inset-0">
-            {[...Array(15)].map((_, i) => (
-              <div
-                key={i}
-                className={`absolute w-3 h-3 bg-gradient-to-r from-primary/40 to-accent/40 rounded-full ${
-                  i % 3 === 0 ? 'animate-float' : i % 3 === 1 ? 'animate-drift' : 'animate-glow'
-                }`}
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${i * 0.3}s`
-                }}
-              />
-            ))}
-          </div>
-          
-          {/* Animated Geometric Shapes */}
-          <div className="absolute top-1/4 right-1/4 w-32 h-32 border-2 border-primary/30 rotate-45 animate-spin" style={{ animationDuration: '15s' }}></div>
-          <div className="absolute bottom-1/3 left-1/4 w-24 h-24 border-2 border-accent/30 animate-morphing animate-glow"></div>
-          <div className="absolute top-3/4 right-1/3 w-16 h-16 bg-gradient-to-r from-primary/20 to-accent/20 animate-float" style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}></div>
+          <div className="absolute top-10 left-10 w-72 h-72 bg-gradient-to-br from-primary/10 to-accent/10 blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-tl from-accent/8 to-primary/8 blur-3xl"></div>
         </div>
         
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent transition-all duration-1000 ${
+            <h1 className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent transition-all duration-1000 ${
               heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}>
               Our Products
             </h1>
-            <p className={`text-xl md:text-2xl text-muted-foreground mb-8 transition-all duration-1000 ${
+            <p className={`text-lg md:text-xl text-muted-foreground mb-8 transition-all duration-1000 ${
               heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`} style={{ transitionDelay: '200ms' }}>
               High-quality sportswear and custom apparel manufactured with precision and care
@@ -102,49 +78,12 @@ const Products = () => {
       </section>
 
       {/* Products Grid */}
-      <section ref={productsRef} className="py-20 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
-        {/* Animated Background for Products Section */}
+      <section ref={productsRef} className="py-20 bg-gradient-to-br from-background via-muted/10 to-primary/5 relative overflow-hidden">
+        {/* Lite Gradient Background */}
         <div className="absolute inset-0">
-          {/* Flowing Energy Lines */}
-          <div className="absolute inset-0">
-            {[...Array(8)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent animate-slide"
-                style={{
-                  width: '300%',
-                  top: `${10 + i * 12}%`,
-                  left: '-100%',
-                  animationDelay: `${i * 0.8}s`,
-                  animationDuration: '6s',
-                  transform: `rotate(${-15 + i * 3}deg)`
-                }}
-              />
-            ))}
-          </div>
-          
-          {/* Morphing Blobs */}
-          <div className="absolute top-20 left-20 w-40 h-40 bg-gradient-to-br from-accent/15 to-primary/15 blur-2xl animate-morphing animate-drift"></div>
-          <div className="absolute bottom-40 right-40 w-60 h-60 bg-gradient-to-tl from-primary/12 to-accent/12 blur-3xl animate-float animate-glow"></div>
-          <div className="absolute top-1/2 right-1/4 w-32 h-32 bg-gradient-to-r from-accent/10 to-primary/10 blur-xl animate-morphing" style={{ animationDelay: '2s' }}></div>
-          
-          {/* Dynamic Grid */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="grid grid-cols-8 gap-6 h-full">
-              {[...Array(32)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`border border-primary/20 ${
-                    i % 4 === 0 ? 'animate-glow' : i % 4 === 1 ? 'animate-pulse' : 'animate-float'
-                  }`}
-                  style={{
-                    animationDelay: `${i * 0.2}s`,
-                    animationDuration: `${3 + Math.random() * 2}s`
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+          <div className="absolute top-10 left-10 w-96 h-96 bg-gradient-to-br from-primary/8 to-accent/8 blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-tl from-accent/6 to-primary/6 blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-primary/4 to-accent/4 blur-2xl animate-pulse" style={{ animationDelay: '4s' }}></div>
         </div>
         
         <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
