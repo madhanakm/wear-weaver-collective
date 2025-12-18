@@ -30,14 +30,14 @@ try {
         $stmt->execute([$data['title'], $data['image_url'], $data['category'], $data['status']]);
         echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
         
-    } elseif (strpos($path, 'update/') === 0 && $method === 'PUT') {
+    } elseif (strpos($path, 'update/') === 0 && ($method === 'PUT' || $method === 'POST')) {
         $id = substr($path, 7);
         $data = json_decode(file_get_contents('php://input'), true);
         $stmt = $pdo->prepare("UPDATE gallery SET title = ?, image_url = ?, category = ?, status = ? WHERE id = ?");
         $stmt->execute([$data['title'], $data['image_url'], $data['category'], $data['status'], $id]);
         echo json_encode(['success' => true]);
         
-    } elseif (strpos($path, 'delete/') === 0 && $method === 'DELETE') {
+    } elseif (strpos($path, 'delete/') === 0 && ($method === 'DELETE' || $method === 'POST')) {
         $id = substr($path, 7);
         $stmt = $pdo->prepare("DELETE FROM gallery WHERE id = ?");
         $stmt->execute([$id]);

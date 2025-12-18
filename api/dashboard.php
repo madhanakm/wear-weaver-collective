@@ -588,9 +588,9 @@ $page = $_GET['page'] ?? 'contacts';
                     echo "<table id='testimonialsTable'>";
                     echo "<tr><th>S. No</th><th>Name</th><th>Company</th><th>Rating</th><th>Status</th><th>Date</th><th>Actions</th></tr>";
                     
-                    foreach ($testimonials as $row) {
+                    foreach ($testimonials as $index => $row) {
                         echo "<tr class='testimonial-row'>";
-                        echo "<td>" . $row['id'] . "</td>";
+                        echo "<td>" . ($index + 1) . "</td>";
                         echo "<td class='testimonial-name'>" . htmlspecialchars($row['name']) . "</td>";
                         echo "<td class='testimonial-company'>" . htmlspecialchars($row['company'] ?? 'N/A') . "</td>";
                         echo "<td>";
@@ -629,7 +629,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "  document.getElementById('testimonialForm').style.display = 'block';";
                 echo "}";
                 echo "function editTestimonial(id) {";
-                echo "  fetch('$API_URL/testimonials-api.php?path=admin')";
+                echo "  fetch('$API_BASE_URL/testimonials-api.php?path=admin')";
                 echo "    .then(r => r.json())";
                 echo "    .then(data => {";
                 echo "      const testimonial = data.find(t => t.id == id);";
@@ -646,7 +646,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "    });";
                 echo "}";
                 echo "function deleteTestimonial(id) {";
-                echo "  fetch('$API_URL/testimonials-api.php?path=delete/' + id, { method: 'POST' })";
+                echo "  fetch('$API_BASE_URL/testimonials-api.php?path=delete/' + id, { method: 'POST' })";
                 echo "    .then(response => response.json())";
                 echo "    .then(data => {";
                 echo "      if (data.success) {";
@@ -660,7 +660,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "function saveTestimonial(e) {";
                 echo "  e.preventDefault();";
                 echo "  const id = document.getElementById('testimonialId').value;";
-                echo "  const url = id ? '$API_URL/testimonials-api.php?path=update/' + id : '$API_URL/testimonials-api.php?path=create';";
+                echo "  const url = id ? '$API_BASE_URL/testimonials-api.php?path=update/' + id : '$API_BASE_URL/testimonials-api.php?path=create';";
                 echo "  const method = id ? 'PUT' : 'POST';";
                 echo "  fetch(url, {";
                 echo "    method: method,";
@@ -796,7 +796,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "  document.getElementById('galleryForm').style.display = 'block';";
                 echo "}";
                 echo "function editGallery(id) {";
-                echo "  fetch('gallery-api.php?path=admin')";
+                echo "  fetch('$API_BASE_URL/gallery-api.php?path=admin')";
                 echo "    .then(r => r.json())";
                 echo "    .then(data => {";
                 echo "      const item = data.find(g => g.id == id);";
@@ -814,7 +814,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "    });";
                 echo "}";
                 echo "function deleteGallery(id) {";
-                echo "  fetch('gallery-api.php?path=delete/' + id, { method: 'POST' })";
+                echo "  fetch('$API_BASE_URL/gallery-api.php?path=delete/' + id, { method: 'POST' })";
                 echo "    .then(r => r.json())";
                 echo "    .then(data => {";
                 echo "      if (data.success) {";
@@ -832,7 +832,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "    return;";
                 echo "  }";
                 echo "  const id = document.getElementById('galleryId').value;";
-                echo "  const url = id ? 'gallery-api.php?path=update/' + id : 'gallery-api.php?path=create';";
+                echo "  const url = id ? '$API_BASE_URL/gallery-api.php?path=update/' + id : '$API_BASE_URL/gallery-api.php?path=create';";
                 echo "  const method = id ? 'PUT' : 'POST';";
                 echo "  fetch(url, {";
                 echo "    method: method,";
@@ -892,9 +892,9 @@ $page = $_GET['page'] ?? 'contacts';
                     echo "<table id='filtersTable'>";
                     echo "<tr><th>S. No</th><th>Name</th><th>Status</th><th>Date</th><th>Actions</th></tr>";
                     
-                    foreach ($filters as $row) {
+                    foreach ($filters as $index => $row) {
                         echo "<tr class='filter-row'>";
-                        echo "<td>" . $row['id'] . "</td>";
+                        echo "<td>" . ($index + 1) . "</td>";
                         echo "<td class='filter-name'>" . htmlspecialchars($row['name']) . "</td>";
 
                         echo "<td><span style='padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; " . ($row['status'] === 'active' ? 'background: #d4edda; color: #155724;' : 'background: #f8d7da; color: #721c24;') . "'>" . ucfirst($row['status']) . "</span></td>";
@@ -920,7 +920,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "  document.getElementById('filterForm').style.display = 'block';";
                 echo "}";
                 echo "function editFilter(id) {";
-                echo "  fetch('product-filters-api.php?path=admin')";
+                echo "  fetch('$API_BASE_URL/product-filters-api.php?path=admin')";
                 echo "    .then(r => r.json())";
                 echo "    .then(data => {";
                 echo "      const filter = data.find(f => f.id == id);";
@@ -935,7 +935,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "    });";
                 echo "}";
                 echo "function deleteFilter(id) {";
-                echo "  fetch('product-filters-api.php?path=delete/' + id, { method: 'POST' })";
+                echo "  fetch('$API_BASE_URL/product-filters-api.php?path=delete/' + id, { method: 'POST' })";
                 echo "    .then(r => r.json())";
                 echo "    .then(data => {";
                 echo "      if (data.success) {";
@@ -948,7 +948,7 @@ $page = $_GET['page'] ?? 'contacts';
                 echo "function saveFilter(e) {";
                 echo "  e.preventDefault();";
                 echo "  const id = document.getElementById('filterId').value;";
-                echo "  const url = id ? 'product-filters-api.php?path=update/' + id : 'product-filters-api.php?path=create';";
+                echo "  const url = id ? '$API_BASE_URL/product-filters-api.php?path=update/' + id : '$API_BASE_URL/product-filters-api.php?path=create';";
                 echo "  const method = id ? 'PUT' : 'POST';";
                 echo "  fetch(url, {";
                 echo "    method: method,";
@@ -1223,9 +1223,9 @@ $page = $_GET['page'] ?? 'contacts';
                     echo "<table id='clientsTable'>";
                     echo "<tr><th>S. No</th><th>Logo</th><th>Name</th><th>Status</th><th>Date</th><th>Actions</th></tr>";
                     
-                    foreach ($clients as $row) {
+                    foreach ($clients as $index => $row) {
                         echo "<tr class='client-row'>";
-                        echo "<td>" . $row['id'] . "</td>";
+                        echo "<td>" . ($index + 1) . "</td>";
                         echo "<td><img src='" . htmlspecialchars($row['logo_url']) . "' style='width: 60px; height: 60px; object-fit: contain; border-radius: 4px;'></td>";
                         echo "<td class='client-name'>" . htmlspecialchars($row['name']) . "</td>";
                         echo "<td><span style='padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; " . ($row['status'] === 'active' ? 'background: #d4edda; color: #155724;' : 'background: #f8d7da; color: #721c24;') . "'>" . ucfirst($row['status']) . "</span></td>";
@@ -1361,9 +1361,9 @@ $page = $_GET['page'] ?? 'contacts';
                     echo "<table>";
                     echo "<tr><th>S. No</th><th>Image</th><th>Title</th><th>Button</th><th>Order</th><th>Status</th><th>Actions</th></tr>";
                     
-                    foreach ($sliders as $row) {
+                    foreach ($sliders as $index => $row) {
                         echo "<tr>";
-                        echo "<td>" . $row['id'] . "</td>";
+                        echo "<td>" . ($index + 1) . "</td>";
                         $imageUrl = $row['image_url'];
                         if ($imageUrl && strpos($imageUrl, 'http') !== 0) {
                             $imageUrl = $API_BASE_URL . '/' . $imageUrl;

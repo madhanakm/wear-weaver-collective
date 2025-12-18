@@ -3,7 +3,7 @@
 // Change these URLs for different environments
 
 // Production URLs
-$API_BASE_URL = 'https://ai.thinkaside.com';
+$API_BASE_URL = 'https://admin.nisanthapparels.com';
 
 // Development URLs (uncomment for local development)
 // $API_BASE_URL = 'http://localhost';

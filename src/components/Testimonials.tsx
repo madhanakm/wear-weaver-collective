@@ -47,7 +47,7 @@ const Testimonials = () => {
             {testimonials.length > 0 && testimonials.map((testimonial, index) => (
               <Card 
                 key={`${testimonial.id}-${index}`}
-                className="min-w-[380px] bg-gradient-to-br from-white to-gray-50 border-2 border-primary/20 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 transform hover:-translate-y-2"
+                className="w-[380px] flex-shrink-0 bg-gradient-to-br from-white to-gray-50 border-2 border-primary/20 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 transform hover:-translate-y-2"
               >
                 <CardContent className="p-8 relative">
                   <div className="absolute top-4 right-4 text-primary/20 text-6xl font-serif">"</div>

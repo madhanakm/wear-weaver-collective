@@ -24,6 +24,13 @@ try {
         $stmt = $pdo->query("SELECT * FROM clients ORDER BY created_at DESC");
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         
+    } elseif (($method === 'DELETE' || $method === 'POST') && isset($_GET['id'])) {
+        // Delete operation
+        $id = $_GET['id'];
+        $stmt = $pdo->prepare("DELETE FROM clients WHERE id = ?");
+        $stmt->execute([$id]);
+        echo json_encode(['success' => true]);
+        
     } elseif ($method === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
         if (isset($data['id']) && $data['id']) {
@@ -42,12 +49,6 @@ try {
         $data = json_decode(file_get_contents('php://input'), true);
         $stmt = $pdo->prepare("UPDATE clients SET name = ?, logo_url = ?, status = ? WHERE id = ?");
         $stmt->execute([$data['name'], $data['logo_url'], $data['status'], $data['id']]);
-        echo json_encode(['success' => true]);
-        
-    } elseif ($method === 'DELETE') {
-        $id = $_GET['id'];
-        $stmt = $pdo->prepare("DELETE FROM clients WHERE id = ?");
-        $stmt->execute([$id]);
         echo json_encode(['success' => true]);
     }
     

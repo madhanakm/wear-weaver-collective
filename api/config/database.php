@@ -1,9 +1,9 @@
 <?php
 $DB_CONFIG = [
     'host' => 'localhost',
-    'dbname' => 'nsg',
-    'username' => 'nsg',
-    'password' => 'nsg'
+    'dbname' => 'ozoeueby_admin',
+    'username' => 'ozoeueby_admin',
+    'password' => 'ozoeueby_admin'
 ];
 
 function getDbConnection() {
