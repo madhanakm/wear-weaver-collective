@@ -84,9 +84,14 @@ const Footer = () => {
             <h4 className="font-bold mb-6 text-lg text-primary">Our Products</h4>
             <ul className="space-y-3 text-secondary-foreground/70">
               {products.map((product) => (
-                <li key={product.id} className="hover:text-primary transition-all duration-200 cursor-pointer flex items-center gap-2 group hover:translate-x-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors"></span>
-                  {product.name}
+                <li key={product.id}>
+                  <Link 
+                    to={`/product/${product.id}`}
+                    className="hover:text-primary transition-all duration-200 cursor-pointer flex items-center gap-2 group hover:translate-x-1"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent/50 group-hover:bg-accent transition-colors"></span>
+                    {product.name}
+                  </Link>
                 </li>
               ))}
             </ul>
