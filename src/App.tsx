@@ -8,6 +8,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import Preloader from "@/components/Preloader";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import GoToTop from "@/components/GoToTop";
+import CallNowButton from "@/components/CallNowButton";
 import Index from "./pages/Index";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
@@ -45,6 +46,7 @@ const App = () => {
         <ScrollToTop />
         <WhatsAppFloat />
         <GoToTop />
+        <CallNowButton />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/gallery" element={<Gallery />} />

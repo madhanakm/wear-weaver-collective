@@ -62,7 +62,7 @@ const Clients = () => {
                       <img
                         src={client.logo_url}
                         alt={client.name}
-                        className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110"
+                        className="max-w-full max-h-full object-contain transition-all duration-500 group-hover:scale-110"
                       />
                     </div>
                     <div className="absolute -inset-2 bg-gradient-to-r from-primary/15 to-accent/15 rounded-full blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-500 -z-10"></div>
